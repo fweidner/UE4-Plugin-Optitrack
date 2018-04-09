@@ -26,11 +26,15 @@ void FOptitrackPluginModule::StartupModule()
 
 	if (NatNetHandle)
 	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetModule loaded successfully.!"));
+
+
 		// Call the test function 
 		unsigned char ver[4];
 		NatNet_GetVersion(ver);
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetModule loaded successfully.!"));
-		
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetVersion: %d.%d.%d.%d"), ver[0], ver[1], ver[2], ver[3])
+
+
 	}
 	else
 	{
