@@ -41,6 +41,8 @@ public class OptitrackPlugin : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+                "CoreUObject",
+                "Engine",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -49,7 +51,7 @@ public class OptitrackPlugin : ModuleRules
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[]
 			{
-				// ... add any modules that your module loads dynamically here ...
+                // ... add any modules that your module loads dynamically here ...
 			}
 			);
 
