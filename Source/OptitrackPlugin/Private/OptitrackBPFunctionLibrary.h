@@ -14,8 +14,11 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 	
-	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack"))
+	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Test"))
 		static void NatNetTest();
+
+	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Connect"))
+		static void Connect();
 
 
 	

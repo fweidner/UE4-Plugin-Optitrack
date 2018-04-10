@@ -10,3 +10,10 @@ void UOptitrackBPFunctionLibrary::NatNetTest()
 	OptitrackSystem* tmpSystem = FOptitrackPluginModule::GetOptiTrackSystem();
 	tmpSystem->PrintVersion();
 }
+
+void UOptitrackBPFunctionLibrary::Connect()
+{
+	OptitrackSystem* tmpSystem = FOptitrackPluginModule::GetOptiTrackSystem();
+	tmpSystem->ConnectToMotive();
+
+}
