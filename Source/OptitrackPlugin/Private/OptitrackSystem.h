@@ -2,6 +2,10 @@
 
 #pragma once
 
+#include <NatNetTypes.h>
+#include <NatNetCAPI.h>
+#include <NatNetClient.h>
+
 #include "CoreMinimal.h"
 
 /**
@@ -12,4 +16,20 @@ class OptitrackSystem
 public:
 	OptitrackSystem();
 	~OptitrackSystem();
+
+	void PrintVersion();
+	int ConnectToMotive();
+
+
+private:
+
+	NatNetClient * g_pClient = NULL;
+
+	sServerDescription g_serverDescription;
+
+	sNatNetClientConnectParams g_connectParams;
+
+	char g_discoveredMulticastGroupAddr[kNatNetIpv4AddrStrLenMax] = NATNET_DEFAULT_MULTICAST_ADDRESS;
+
+	int g_analogSamplesPerMocapFrame = 0;
 };

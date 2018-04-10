@@ -5,6 +5,8 @@
 #include <NatNetCAPI.h>
 #include <NatNetClient.h>
 
+#include "OptitrackSystem.h"
+
 #include <vector>
 
 #include "ModuleManager.h"
@@ -22,17 +24,12 @@ public:
 
 	int ConnectToMotive();
 
+	static OptitrackSystem* GetOptiTrackSystem();;
+
 private:
 	/** Handle to the test dll we will load */
-	void*	NatNetHandle;
+	void* NatNetHandle;
 	
-	NatNetClient* g_pClient = NULL;
 	
-	sServerDescription g_serverDescription;
-	
-	sNatNetClientConnectParams g_connectParams;
-	
-	char g_discoveredMulticastGroupAddr[kNatNetIpv4AddrStrLenMax] = NATNET_DEFAULT_MULTICAST_ADDRESS;
-	
-	int g_analogSamplesPerMocapFrame = 0;
+
 };
