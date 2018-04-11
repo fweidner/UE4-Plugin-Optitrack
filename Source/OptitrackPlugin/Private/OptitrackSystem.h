@@ -35,4 +35,5 @@ private:
 	char g_discoveredMulticastGroupAddr[kNatNetIpv4AddrStrLenMax] = NATNET_DEFAULT_MULTICAST_ADDRESS;
 
 	int g_analogSamplesPerMocapFrame = 0;
+
 };

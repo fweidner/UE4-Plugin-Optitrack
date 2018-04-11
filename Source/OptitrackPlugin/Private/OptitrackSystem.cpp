@@ -38,8 +38,6 @@ int OptitrackSystem::ConnectToMotive()
 
 	g_pClient = new NatNetClient();
 
-
-
 	const unsigned int kDiscoveryWaitTimeMillisec = 1 * 1000;
 	const int kMaxDescriptions = 1;
 	sNatNetDiscoveredServer servers[kMaxDescriptions];
@@ -125,7 +123,10 @@ int OptitrackSystem::ConnectToMotive()
 		}
 	}
 
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("Connection to Motive established."));
 	return ErrorCode_OK;
+}
+
 void OptitrackSystem::ResetClient()
 {
 	int iSuccess;
@@ -147,7 +148,6 @@ void OptitrackSystem::InitClient()
 {
 	NatNet_SetLogCallback(MessageHandler);
 	//g_pClient->SetFrameReceivedCallback(DataHandler, g_pClient);	// this function will receive data from the server
-
 
 }
 

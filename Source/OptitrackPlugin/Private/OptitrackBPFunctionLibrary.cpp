@@ -16,6 +16,7 @@ void UOptitrackBPFunctionLibrary::AutoConnect()
 	
 	FOptitrackPluginModule::GetOptiTrackSystem()->ConnectToMotive();
 
+}
 
 void UOptitrackBPFunctionLibrary::ResetClient()
 {
