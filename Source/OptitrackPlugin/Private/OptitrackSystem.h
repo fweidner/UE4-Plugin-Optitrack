@@ -20,6 +20,7 @@ public:
 	void PrintVersion();
 	int ConnectToMotive();
 
+	void ResetClient();
 
 private:
 

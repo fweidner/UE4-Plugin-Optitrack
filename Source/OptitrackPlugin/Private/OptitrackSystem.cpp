@@ -122,4 +122,32 @@ int OptitrackSystem::ConnectToMotive()
 	}
 
 	return ErrorCode_OK;
+void OptitrackSystem::ResetClient()
+{
+	int iSuccess;
+
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("Resetting client..."));
+
+	iSuccess = g_pClient->Disconnect();
+	if (iSuccess != 0)
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client reset failed."));
+	}
+	else
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client reset successful.."));
+	}
+}
+
+void OptitrackSystem::InitClient()
+{
+	NatNet_SetLogCallback(MessageHandler);
+	//g_pClient->SetFrameReceivedCallback(DataHandler, g_pClient);	// this function will receive data from the server
+
+
+}
+
+
+
+	}
 }

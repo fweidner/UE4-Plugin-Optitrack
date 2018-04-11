@@ -7,13 +7,18 @@
 
 void UOptitrackBPFunctionLibrary::NatNetTest()
 {
-	OptitrackSystem* tmpSystem = FOptitrackPluginModule::GetOptiTrackSystem();
-	tmpSystem->PrintVersion();
+	
+	FOptitrackPluginModule::GetOptiTrackSystem()->PrintVersion();
 }
 
 void UOptitrackBPFunctionLibrary::AutoConnect()
 {
-	OptitrackSystem* tmpSystem = FOptitrackPluginModule::GetOptiTrackSystem();
-	tmpSystem->ConnectToMotive();
+	
+	FOptitrackPluginModule::GetOptiTrackSystem()->ConnectToMotive();
 
+
+void UOptitrackBPFunctionLibrary::ResetClient()
+{
+	FOptitrackPluginModule::GetOptiTrackSystem()->ResetClient();
 }
+
