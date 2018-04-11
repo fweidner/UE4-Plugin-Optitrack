@@ -26,6 +26,12 @@ void OptitrackSystem::PrintVersion()
 /* MOTIVE / NATNET CORE		                                            */
 /************************************************************************/
 
+void OptitrackSystem::ConnectAndInit()
+{
+	ConnectToMotive();
+	InitClient();
+}
+
 int OptitrackSystem::ConnectToMotive()
 {
 	UE_LOG(LogNatNetPlugin, Warning, TEXT("Establish connection to Motive..."));

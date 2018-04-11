@@ -17,6 +17,9 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Test"))
 		static void NatNetTest();
 
+	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Connect Init"))
+		static void ConnectAndInit();
+
 	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Connect"))
 		static void AutoConnect();
 

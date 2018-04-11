@@ -11,6 +11,11 @@ void UOptitrackBPFunctionLibrary::NatNetTest()
 	FOptitrackPluginModule::GetOptiTrackSystem()->PrintVersion();
 }
 
+void UOptitrackBPFunctionLibrary::ConnectAndInit()
+{
+	FOptitrackPluginModule::GetOptiTrackSystem()->ConnectAndInit();
+}
+
 void UOptitrackBPFunctionLibrary::AutoConnect()
 {
 	

@@ -18,14 +18,19 @@ public:
 	~OptitrackSystem();
 
 	void PrintVersion();
+
+	void ConnectAndInit();
+
 	int ConnectToMotive();
 	void DisconnectFromMotive();
 
 	void ResetClient();
 	void InitClient();
 	float GetFrameRate();
-
 	void GetDataDescription();
+
+
+
 private:
 
 	NatNetClient * g_pClient = NULL;
