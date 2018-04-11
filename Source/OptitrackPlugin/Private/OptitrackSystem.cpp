@@ -6,6 +6,8 @@ void NATNET_CALLCONV MessageHandler(Verbosity msgType, const char* msg);
 void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData);   
 int g_analogSamplesPerMocapFrame = 0;
 
+TMap<int32_t, sRigidBodyData> RigidBodyData;
+
 OptitrackSystem::OptitrackSystem()
 {
 }
@@ -289,6 +291,24 @@ void OptitrackSystem::GetDataDescription()
 				// Unknown
 			}
 		}
+	}
+}
+
+FTransform OptitrackSystem::GetRigidBodyTransform(int _ID)
+{
+	sRigidBodyData* tmpRigidBodyData = RigidBodyData.Find(_ID);
+	
+	if (tmpRigidBodyData)
+	{
+		return FTransform(
+			FRotator(FQuat(tmpRigidBodyData->qx, tmpRigidBodyData->qy, tmpRigidBodyData->qz, tmpRigidBodyData->qw)),
+			FVector(tmpRigidBodyData->x, tmpRigidBodyData->y, tmpRigidBodyData->z),
+			FVector(1, 1, 1)
+		);
+	}
+	else
+	{
+		return FTransform();
 	}
 }
 

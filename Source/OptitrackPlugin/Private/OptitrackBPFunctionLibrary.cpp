@@ -45,3 +45,9 @@ void UOptitrackBPFunctionLibrary::GetDataDescription()
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetDataDescription();
 }
+
+FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID)
+{
+	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+}
+

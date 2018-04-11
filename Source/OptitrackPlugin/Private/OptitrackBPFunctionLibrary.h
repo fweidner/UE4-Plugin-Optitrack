@@ -38,6 +38,10 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack GetDataDescription"))
 		static void GetDataDescription();
 
+	//////////////////////////////////////////////////////////////////////////
+
+	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack GetDataDescription"))
+		static FTransform GetRigidBodyTransform(int _ID);
 
 	
 };

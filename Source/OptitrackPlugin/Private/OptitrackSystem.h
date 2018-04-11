@@ -31,6 +31,7 @@ public:
 
 
 
+	FTransform GetRigidBodyTransform(int _ID);
 private:
 
 	NatNetClient * g_pClient = NULL;
