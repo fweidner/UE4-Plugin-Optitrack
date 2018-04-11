@@ -150,7 +150,25 @@ void OptitrackSystem::InitClient()
 
 }
 
+float OptitrackSystem::GetFrameRate()
+{
 
+	void* pResult;
+	int nBytes = 0;
+	float fRate = 0.f;
+	ErrorCode ret = ErrorCode_OK;
+
+	ret = g_pClient->SendMessageAndWait("FrameRate", &pResult, &nBytes);
+	if (ret == ErrorCode_OK)
+	{
+		fRate = *((float*)pResult);
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Mocap Framerate : %3.2f"), fRate);
+	}
+	else
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Error getting frame rate."));
+
+	return fRate;
+}
 
 	}
 

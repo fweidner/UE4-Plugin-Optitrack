@@ -26,6 +26,9 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Init"))
 		static void InitClient();
 
+	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack FrameRate"))
+		static float GetFrameRate();
+
 
 	
 	

@@ -28,3 +28,8 @@ void UOptitrackBPFunctionLibrary::InitClient()
 
 }
 
+float UOptitrackBPFunctionLibrary::GetFrameRate()
+{
+	return FOptitrackPluginModule::GetOptiTrackSystem()->GetFrameRate();
+}
+

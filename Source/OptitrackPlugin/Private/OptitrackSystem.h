@@ -22,6 +22,7 @@ public:
 
 	void ResetClient();
 	void InitClient();
+	float GetFrameRate();
 
 private:
 
