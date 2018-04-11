@@ -168,7 +168,6 @@ void OptitrackSystem::InitClient()
 {
 	NatNet_SetLogCallback(MessageHandler);
 	g_pClient->SetFrameReceivedCallback(DataHandler, g_pClient);
-
 }
 
 float OptitrackSystem::GetFrameRate()
@@ -398,22 +397,9 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData)
 // 		printf("Transit latency : %.2lf milliseconds\n", transitLatencyMillisec);
 // 	}
 
-	// FrameOfMocapData params
-	bool bIsRecording = ((data->params & 0x01) != 0);
 	bool bTrackedModelsChanged = ((data->params & 0x02) != 0);
-	if (bIsRecording)
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("RECORDING\n"));
 	if (bTrackedModelsChanged)
 		UE_LOG(LogNatNetPlugin, Warning, TEXT("Models Changed.\n"));
-
-
-	// timecode - for systems with an eSync and SMPTE timecode generator - decode to values
-	//int hour, minute, second, frame, subframe;
-	//NatNet_DecodeTimecode(data->Timecode, data->TimecodeSubframe, &hour, &minute, &second, &frame, &subframe);
-	// decode to friendly string
-	//char szTimecode[128] = "";
-	//NatNet_TimecodeStringify(data->Timecode, data->TimecodeSubframe, szTimecode, 128);
-	//UE_LOG(LogNatNetPlugin, Warning, TEXT("Timecode : %s\n"), *FString(szTimecode));
 
 	// Rigid Bodies
 	UE_LOG(LogNatNetPlugin, Warning, TEXT("Rigid Bodies [Count=%d]"), data->nRigidBodies);
@@ -435,7 +421,8 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData)
 			data->RigidBodies[i].qy,
 			data->RigidBodies[i].qz,
 			data->RigidBodies[i].qw);
-		
+	
+		RigidBodyData.Add(data->RigidBodies[i].ID, data->RigidBodies[i]);
 	}
 
 ///
