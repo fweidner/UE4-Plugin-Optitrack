@@ -62,7 +62,8 @@ int OptitrackSystem::ConnectToMotive()
 	if (discoveredServer.serverDescription.bConnectionInfoValid)
 	{
 		// Build the connection parameters.
-		g_connectParams.connectionType = discoveredServer.serverDescription.ConnectionMulticast ? ConnectionType_Multicast : ConnectionType_Unicast;
+		//g_connectParams.connectionType = discoveredServer.serverDescription.ConnectionMulticast ? ConnectionType_Multicast : ConnectionType_Unicast;
+		g_connectParams.connectionType = ConnectionType_Unicast;
 		g_connectParams.serverCommandPort = discoveredServer.serverCommandPort;
 		g_connectParams.serverDataPort = discoveredServer.serverDescription.ConnectionDataPort;
 		g_connectParams.serverAddress = discoveredServer.serverAddress;
