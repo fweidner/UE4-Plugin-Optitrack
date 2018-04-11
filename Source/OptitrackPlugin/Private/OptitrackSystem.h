@@ -27,6 +27,7 @@ public:
 	void ResetClient();
 	void InitClient();
 	float GetFrameRate();
+	float GetUnitsToMillimeter();
 	void GetDataDescription();
 
 
@@ -43,5 +44,7 @@ private:
 	char g_discoveredMulticastGroupAddr[kNatNetIpv4AddrStrLenMax] = NATNET_DEFAULT_MULTICAST_ADDRESS;
 
 	int g_analogSamplesPerMocapFrame = 0;
+
+	int UnitsToMM = 0;
 
 };

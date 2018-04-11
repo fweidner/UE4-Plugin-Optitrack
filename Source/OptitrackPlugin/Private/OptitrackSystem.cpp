@@ -190,6 +190,27 @@ float OptitrackSystem::GetFrameRate()
 	return fRate;
 }
 
+float OptitrackSystem::GetUnitsToMillimeter()
+{
+	void* pResult;
+	int nBytes = 0;
+	float unitstomm = 0.f;
+	ErrorCode ret = ErrorCode_OK;
+
+	ret = g_pClient->SendMessageAndWait("UnitsToMillimeters", &pResult, &nBytes);
+	if (ret == ErrorCode_OK)
+	{
+		unitstomm = *((float*)pResult);
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Mocap UnitsToMillimeters : %3.2f"), unitstomm);
+	}
+	else
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Error getting UnitsToMillimeters."));
+
+	UnitsToMM = unitstomm;
+
+	return unitstomm;
+}
+
 void OptitrackSystem::GetDataDescription()
 {
 	UE_LOG(LogNatNetPlugin, Warning, TEXT("Requesting Data Descriptions..."));
@@ -301,7 +322,7 @@ FTransform OptitrackSystem::GetRigidBodyTransform(int _ID)
 	{
 		return FTransform(
 			FRotator(FQuat(tmpRigidBodyData->qx, tmpRigidBodyData->qy, tmpRigidBodyData->qz, tmpRigidBodyData->qw)),
-			FVector(tmpRigidBodyData->x, tmpRigidBodyData->y, tmpRigidBodyData->z),
+			FVector(tmpRigidBodyData->x*UnitsToMM, tmpRigidBodyData->y*UnitsToMM, tmpRigidBodyData->z*UnitsToMM),
 			FVector(1, 1, 1)
 		);
 	}
