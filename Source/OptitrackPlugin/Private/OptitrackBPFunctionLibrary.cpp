@@ -16,6 +16,9 @@ void UOptitrackBPFunctionLibrary::AutoConnect()
 	
 	FOptitrackPluginModule::GetOptiTrackSystem()->ConnectToMotive();
 
+void UOptitrackBPFunctionLibrary::Disconnect()
+{
+	FOptitrackPluginModule::GetOptiTrackSystem()->DisconnectFromMotive();
 }
 
 void UOptitrackBPFunctionLibrary::ResetClient()

@@ -19,6 +19,8 @@ public:
 
 	void PrintVersion();
 	int ConnectToMotive();
+	void DisconnectFromMotive();
+
 	void ResetClient();
 	void InitClient();
 	float GetFrameRate();
