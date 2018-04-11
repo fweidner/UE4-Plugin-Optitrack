@@ -18,8 +18,8 @@ void UOptitrackBPFunctionLibrary::ConnectAndInit()
 
 void UOptitrackBPFunctionLibrary::AutoConnect()
 {
-	
 	FOptitrackPluginModule::GetOptiTrackSystem()->ConnectToMotive();
+}
 
 void UOptitrackBPFunctionLibrary::Disconnect()
 {
@@ -34,7 +34,6 @@ void UOptitrackBPFunctionLibrary::ResetClient()
 void UOptitrackBPFunctionLibrary::InitClient()
 {
 	FOptitrackPluginModule::GetOptiTrackSystem()->InitClient();
-
 }
 
 float UOptitrackBPFunctionLibrary::GetFrameRate()
@@ -45,5 +44,4 @@ float UOptitrackBPFunctionLibrary::GetFrameRate()
 void UOptitrackBPFunctionLibrary::GetDataDescription()
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetDataDescription();
-
 }

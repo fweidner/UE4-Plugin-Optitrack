@@ -165,7 +165,7 @@ void OptitrackSystem::ResetClient()
 void OptitrackSystem::InitClient()
 {
 	NatNet_SetLogCallback(MessageHandler);
-	//g_pClient->SetFrameReceivedCallback(DataHandler, g_pClient);	// this function will receive data from the server
+	g_pClient->SetFrameReceivedCallback(DataHandler, g_pClient);
 
 }
 
