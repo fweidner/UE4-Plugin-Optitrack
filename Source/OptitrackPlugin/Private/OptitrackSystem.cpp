@@ -170,7 +170,108 @@ float OptitrackSystem::GetFrameRate()
 	return fRate;
 }
 
+void OptitrackSystem::GetDataDescription()
+{
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("Requesting Data Descriptions..."));
+	sDataDescriptions* pDataDefs = NULL;
+	int iResult = g_pClient->GetDataDescriptionList(&pDataDefs);
+	if (iResult != ErrorCode_OK || pDataDefs == NULL)
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Unable to retrieve Data Descriptions."));
 	}
+	else
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Received %d Data Descriptions:"), pDataDefs->nDataDescriptions);
+		for (int i = 0; i < pDataDefs->nDataDescriptions; i++)
+		{
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("Data Description # %d (type=%d)"), i, pDataDefs->arrDataDescriptions[i].type);
+			if (pDataDefs->arrDataDescriptions[i].type == Descriptor_MarkerSet)
+			{
+				// MarkerSet
+				sMarkerSetDescription* pMS = pDataDefs->arrDataDescriptions[i].Data.MarkerSetDescription;
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("MarkerSet Name : %s"), *FString(pMS->szName));
+				for (int i = 0; i < pMS->nMarkers; i++)
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("%s"), *FString(pMS->szMarkerNames[i]));
+
+			}
+			else if (pDataDefs->arrDataDescriptions[i].type == Descriptor_RigidBody)
+			{
+				// RigidBody
+				sRigidBodyDescription* pRB = pDataDefs->arrDataDescriptions[i].Data.RigidBodyDescription;
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("RigidBody Name : %s"), *FString(pRB->szName));
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("RigidBody ID : %d"), pRB->ID);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("RigidBody Parent ID : %d"), pRB->parentID);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Parent Offset : %3.2f,%3.2f,%3.2f"), pRB->offsetx, pRB->offsety, pRB->offsetz);
+
+				if (pRB->MarkerPositions != NULL && pRB->MarkerRequiredLabels != NULL)
+				{
+					for (int markerIdx = 0; markerIdx < pRB->nMarkers; ++markerIdx)
+					{
+						const MarkerData& markerPosition = pRB->MarkerPositions[markerIdx];
+						const int markerRequiredLabel = pRB->MarkerRequiredLabels[markerIdx];
+
+						UE_LOG(LogNatNetPlugin, Warning, TEXT("\tMarker #%d:"), markerIdx);
+						UE_LOG(LogNatNetPlugin, Warning, TEXT("\t\tPosition: %.2f, %.2f, %.2f"), markerPosition[0], markerPosition[1], markerPosition[2]);
+
+						if (markerRequiredLabel != 0)
+						{
+							UE_LOG(LogNatNetPlugin, Warning, TEXT("\t\tRequired active label: %d"), markerRequiredLabel);
+						}
+					}
+				}
+			}
+			else if (pDataDefs->arrDataDescriptions[i].type == Descriptor_Skeleton)
+			{
+				// Skeleton
+				sSkeletonDescription* pSK = pDataDefs->arrDataDescriptions[i].Data.SkeletonDescription;
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Skeleton Name : %s"), *FString(pSK->szName));
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Skeleton ID : %d"), pSK->skeletonID);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("RigidBody (Bone) Count : %d"), pSK->nRigidBodies);
+				for (int j = 0; j < pSK->nRigidBodies; j++)
+				{
+					sRigidBodyDescription* pRB = &pSK->RigidBodies[j];
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("  RigidBody Name : %s"), *FString(pRB->szName));
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("  RigidBody ID : %d"), pRB->ID);
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("  RigidBody Parent ID : %d"), pRB->parentID);
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("  Parent Offset : %3.2f,%3.2f,%3.2f"), pRB->offsetx, pRB->offsety, pRB->offsetz);
+				}
+			}
+			else if (pDataDefs->arrDataDescriptions[i].type == Descriptor_ForcePlate)
+			{
+				// Force Plate
+				sForcePlateDescription* pFP = pDataDefs->arrDataDescriptions[i].Data.ForcePlateDescription;
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate ID : %d"), pFP->ID);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Serial : %s"), *FString(pFP->strSerialNo));
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Width : %3.2f"), pFP->fWidth);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Length : %3.2f"), pFP->fLength);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Electrical Center Offset (%3.3f, %3.3f, %3.3f)"), pFP->fOriginX, pFP->fOriginY, pFP->fOriginZ);
+				for (int iCorner = 0; iCorner < 4; iCorner++)
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Corner %d : (%3.4f, %3.4f, %3.4f)"), iCorner, pFP->fCorners[iCorner][0], pFP->fCorners[iCorner][1], pFP->fCorners[iCorner][2]);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Type : %d"), pFP->iPlateType);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Data Type : %d"), pFP->iChannelDataType);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Force Plate Channel Count : %d"), pFP->nChannels);
+				for (int iChannel = 0; iChannel < pFP->nChannels; iChannel++)
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("\tChannel %d : %s"), iChannel, *FString(pFP->szChannelNames[iChannel]));
+			}
+			else if (pDataDefs->arrDataDescriptions[i].type == Descriptor_Device)
+			{
+				// Peripheral Device
+				sDeviceDescription* pDevice = pDataDefs->arrDataDescriptions[i].Data.DeviceDescription;
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Device Name : %s"), *FString(pDevice->strName));
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Device Serial : %s"), *FString(pDevice->strSerialNo));
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Device ID : %d"), pDevice->ID);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Device Channel Count : %d"), pDevice->nChannels);
+				for (int iChannel = 0; iChannel < pDevice->nChannels; iChannel++)
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("\tChannel %d : %s"), iChannel, *FString(pDevice->szChannelNames[iChannel]));
+			}
+			else
+			{
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Unknown data type."));
+				// Unknown
+			}
+		}
+	}
+}
 
 void NATNET_CALLCONV MessageHandler(Verbosity msgType, const char* msg)
 {

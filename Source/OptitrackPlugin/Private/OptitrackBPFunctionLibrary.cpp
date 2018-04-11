@@ -33,3 +33,8 @@ float UOptitrackBPFunctionLibrary::GetFrameRate()
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetFrameRate();
 }
 
+void UOptitrackBPFunctionLibrary::GetDataDescription()
+{
+	return FOptitrackPluginModule::GetOptiTrackSystem()->GetDataDescription();
+
+}

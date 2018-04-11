@@ -19,11 +19,11 @@ public:
 
 	void PrintVersion();
 	int ConnectToMotive();
-
 	void ResetClient();
 	void InitClient();
 	float GetFrameRate();
 
+	void GetDataDescription();
 private:
 
 	NatNetClient * g_pClient = NULL;
