@@ -23,6 +23,9 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Reset"))
 		static void ResetClient();
 
+	UFUNCTION(BlueprintCallable, Category = "OptiTrack", meta = (Keywords = "NatNet OptiTrack Init"))
+		static void InitClient();
+
 
 	
 	

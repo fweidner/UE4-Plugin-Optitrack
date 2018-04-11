@@ -21,6 +21,7 @@ public:
 	int ConnectToMotive();
 
 	void ResetClient();
+	void InitClient();
 
 private:
 

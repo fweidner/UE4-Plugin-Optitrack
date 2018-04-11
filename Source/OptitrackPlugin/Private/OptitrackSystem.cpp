@@ -2,6 +2,9 @@
 
 #include "OptitrackSystem.h"
 
+void NATNET_CALLCONV MessageHandler(Verbosity msgType, const char* msg);      // receives NatNet error messages
+
+
 OptitrackSystem::OptitrackSystem()
 {
 }
@@ -150,4 +153,33 @@ void OptitrackSystem::InitClient()
 
 
 	}
+
+void NATNET_CALLCONV MessageHandler(Verbosity msgType, const char* msg)
+{
+	if (msgType < Verbosity_Info)
+	{
+		return;
+	}
+	
+	switch (msgType)
+	{
+	case Verbosity_Debug:
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("[DEBUG] %s"), *FString(msg));
+		break;
+	case Verbosity_Info:
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("[INFO] %s"), *FString(msg));
+		break;
+	case Verbosity_Warning:
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("[WARN] %s"), *FString(msg));
+		break;
+	case Verbosity_Error:
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("[ERROR] %s"), *FString(msg));
+		break;
+	default:
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("[?????] %s"), *FString(msg));
+		
+		break;
+	}
+
+
 }

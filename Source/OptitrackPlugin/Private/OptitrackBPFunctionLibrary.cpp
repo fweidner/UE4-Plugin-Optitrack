@@ -22,3 +22,9 @@ void UOptitrackBPFunctionLibrary::ResetClient()
 	FOptitrackPluginModule::GetOptiTrackSystem()->ResetClient();
 }
 
+void UOptitrackBPFunctionLibrary::InitClient()
+{
+	FOptitrackPluginModule::GetOptiTrackSystem()->InitClient();
+
+}
+
