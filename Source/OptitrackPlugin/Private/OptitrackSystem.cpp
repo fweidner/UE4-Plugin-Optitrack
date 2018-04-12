@@ -134,15 +134,23 @@ int OptitrackSystem::ConnectToMotive()
 	return ErrorCode_OK;
 }
 
-
 void OptitrackSystem::DisconnectFromMotive()
 {
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("Trying to disconnect from Motive."));
 	if (g_pClient)
 	{
 		g_pClient->Disconnect();
 		g_pClient = NULL;
 		delete g_pClient;
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Disconnected from Motive."));
 	}
+	else
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Disconnect not necessary. Client not connected."));
+	}
+
+	
+
 }
 
 void OptitrackSystem::ResetClient()
