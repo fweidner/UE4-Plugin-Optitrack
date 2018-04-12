@@ -52,7 +52,7 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 		static bool SetPrintDebugMessages(bool _newVal);
 
 
-		//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack GetDataDescription"))
 		static FTransform GetRigidBodyTransform(int _ID);
@@ -62,4 +62,6 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Actor Scale"))
 		static FTransform UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, int _ID, ECoordSystemsoptitrack _coordSystem);
+	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Character Scale"))
+		static void UpdateWithoutScalePlayer(APawn* _tmp, int _ID=1);
 };

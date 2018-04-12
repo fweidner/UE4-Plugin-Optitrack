@@ -88,6 +88,16 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	}
 }
 
+void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID)
+{
+	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+	
+	if (_tmp)
+	{
+		_tmp->SetActorLocation(tmpTransform.GetLocation());
+		_tmp->GetController()->SetControlRotation(tmpTransform.GetRotation().Rotator());
+	}
+}
 FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID)
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
