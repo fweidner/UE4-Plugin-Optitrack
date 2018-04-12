@@ -40,12 +40,7 @@ int OptitrackSystem::ConnectToMotive()
 {
 	UE_LOG(LogNatNetPlugin, Warning, TEXT("Establish connection to Motive..."));
 
-	if (g_pClient)
-	{
-		g_pClient->Disconnect();
-		g_pClient = NULL;
-		delete g_pClient;
-	}
+	DisconnectFromMotive();
 
 	g_pClient = new NatNetClient();
 
