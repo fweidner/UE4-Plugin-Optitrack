@@ -346,6 +346,19 @@ void OptitrackSystem::GetDataDescription()
 	}
 }
 
+int OptitrackSystem::GetIdToName(FString _name)
+{
+	const int* pRes = RigidBodyIdToName.Find(_name);
+	
+	if (pRes)
+		return *pRes;
+	else
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("no ID to name \"%s\" found. Returning 0. "), *_name);
+		return 0;
+	}
+}
+
 FTransform OptitrackSystem::GetRigidBodyTransform(int _ID)
 {
 	sRigidBodyData* tmpRigidBodyData = RigidBodyData.Find(_ID);

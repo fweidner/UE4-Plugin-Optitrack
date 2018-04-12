@@ -56,9 +56,9 @@ bool UOptitrackBPFunctionLibrary::SetPrintDebugMessages(bool _newVal)
 	return FOptitrackPluginModule::GetOptiTrackSystem()->SetPrintDebugMessages(_newVal);
 }
 
-FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActor, int _ID)
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActor, int _ID /*= 1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
-	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 
 	_tmpActor->SetActorLocation(tmpTransform.GetLocation());
 	_tmpActor->SetActorRotation(tmpTransform.GetRotation());
@@ -68,9 +68,9 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActo
 	return tmpTransform;
 }
 
-FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, ECoordSystemsoptitrack _coordSystem, int _ID /*= 1*/)
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, ECoordSystemsoptitrack _coordSystem, int _ID /*= 1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
-	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 
 	switch (_coordSystem)
 	{
@@ -88,9 +88,9 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	}
 }
 
-void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID)
+void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
-	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 	
 	if (_tmp)
 	{
@@ -116,8 +116,17 @@ void UOptitrackBPFunctionLibrary::ResetRotationPlayer(APawn* _tmp, bool _yaw, bo
 	_tmp->GetController()->SetControlRotation(tmpRotator);
 }
 
-FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID)
+FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID, FString _Name, ERigidBodyIdentifierOptitrack _IdentifierMethod)
 {
-	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 }
 
+int UOptitrackBPFunctionLibrary::GetCorrectID(FString _Name, int _ID, ERigidBodyIdentifierOptitrack _IdentifierMethod)
+{
+	int tmpID = _ID;
+	if (_IdentifierMethod == ERigidBodyIdentifierOptitrack::RigidBodyName)
+	{
+		tmpID = FOptitrackPluginModule::GetOptiTrackSystem()->GetIdToName(_Name);
+	}
+	return tmpID;
+}

@@ -30,6 +30,7 @@ public:
 	float GetUnitsToMillimeter();
 	void InitRigidBodyIdToName();
 	void GetDataDescription();
+	int GetIdToName(FString _name);
 	
 	FTransform GetRigidBodyTransform(int _ID);
 
