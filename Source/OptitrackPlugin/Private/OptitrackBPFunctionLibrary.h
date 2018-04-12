@@ -70,7 +70,7 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 		static void UpdateWithoutScalePlayer(APawn* _tmp, int _ID=1);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Reset Control Rotation"))
-		static void SetControlRotationToZeroPlayer(APawn* _tmp, bool _yaw = true, bool _pitch=true, bool _roll=true);
+		static void ResetRotationPlayer(APawn* _tmp, bool _yaw = true, bool _pitch=true, bool _roll=true);
 
 
 };

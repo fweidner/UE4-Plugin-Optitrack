@@ -99,7 +99,7 @@ void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID)
 	}
 }
 
-void UOptitrackBPFunctionLibrary::SetControlRotationToZeroPlayer(APawn* _tmp, bool _yaw, bool _pitch, bool _roll)
+void UOptitrackBPFunctionLibrary::ResetRotationPlayer(APawn* _tmp, bool _yaw, bool _pitch, bool _roll)
 {
 
 	//X= Roll, Y= Pitch, Z= Yaw
