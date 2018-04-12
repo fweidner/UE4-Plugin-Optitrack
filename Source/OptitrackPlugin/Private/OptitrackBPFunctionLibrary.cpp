@@ -103,7 +103,7 @@ void UOptitrackBPFunctionLibrary::ResetRotationPlayer(APawn* _tmp, bool _yaw, bo
 {
 
 	//X= Roll, Y= Pitch, Z= Yaw
-	FRotator tmpRotator = FRotator();
+	FRotator tmpRotator = FRotator(0.f, 0.f, 0.f);
 	FRotator tmpControlRotator = _tmp->GetController()->GetControlRotation();
 
 	if (_roll)
