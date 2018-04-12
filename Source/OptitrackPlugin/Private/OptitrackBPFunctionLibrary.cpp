@@ -55,6 +55,18 @@ bool UOptitrackBPFunctionLibrary::SetPrintDebugMessages(bool _newVal)
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->SetPrintDebugMessages(_newVal);
 }
+
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActor, int _ID)
+{
+	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+
+	_tmpActor->SetActorLocation(tmpTransform.GetLocation());
+	_tmpActor->SetActorRotation(tmpTransform.GetRotation());
+
+	tmpTransform.SetScale3D(_tmpActor->GetActorScale3D());
+
+	return tmpTransform;
+}
 FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID)
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);

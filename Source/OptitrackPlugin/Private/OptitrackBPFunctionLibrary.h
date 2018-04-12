@@ -50,5 +50,7 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack GetDataDescription"))
 		static FTransform GetRigidBodyTransform(int _ID);
 
+	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Actor Scale"))
+		static FTransform UpdateWithoutScaleActor(AActor* _tmpActor, int _ID);
 
 };
