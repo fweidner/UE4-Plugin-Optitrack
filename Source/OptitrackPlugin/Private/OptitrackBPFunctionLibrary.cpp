@@ -7,7 +7,7 @@
 
 void UOptitrackBPFunctionLibrary::NatNetTest()
 {
-	
+
 	FOptitrackPluginModule::GetOptiTrackSystem()->PrintVersion();
 }
 
@@ -67,6 +67,27 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActo
 
 	return tmpTransform;
 }
+
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, int _ID, ECoordSystemsoptitrack _coordSystem)
+{
+	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
+
+	switch (_coordSystem)
+	{
+	case ECoordSystemsoptitrack::World:
+	{
+		_tmpSceneComponent->SetWorldLocation(tmpTransform.GetLocation());
+		_tmpSceneComponent->SetWorldRotation(tmpTransform.GetRotation());
+		tmpTransform.SetScale3D(_tmpSceneComponent->GetComponentScale());
+		return tmpTransform;
+	}
+	default:
+	{
+		return _tmpSceneComponent->GetComponentTransform(); //or return an empty transform?
+	}	
+	}
+}
+
 FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID)
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);

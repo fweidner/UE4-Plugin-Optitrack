@@ -9,6 +9,13 @@
 /**
  * 
  */
+
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class ECoordSystemsoptitrack : uint8
+{
+	World 	UMETA(DisplayName = "adjust in world space"),
+};
+
 UCLASS()
 class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
@@ -53,4 +60,6 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Actor Scale"))
 		static FTransform UpdateWithoutScaleActor(AActor* _tmpActor, int _ID);
 
+	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Actor Scale"))
+		static FTransform UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, int _ID, ECoordSystemsoptitrack _coordSystem);
 };
