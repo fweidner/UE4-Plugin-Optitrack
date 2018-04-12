@@ -22,9 +22,9 @@ public:
 	void ConnectAndInit();
 
 	int ConnectToMotive();
-	void DisconnectFromMotive();
+	void DisconnectAndResetClient();
 
-	void ResetClient();
+	void DisconnectClient();
 	void InitClient();
 	float GetFrameRate();
 	float GetUnitsToMillimeter();

@@ -42,7 +42,7 @@ int OptitrackSystem::ConnectToMotive()
 {
 	UE_LOG(LogNatNetPlugin, Warning, TEXT("Establish connection to Motive..."));
 
-	DisconnectFromMotive();
+	DisconnectAndResetClient();
 
 	g_pClient = new NatNetClient();
 
@@ -135,39 +135,36 @@ int OptitrackSystem::ConnectToMotive()
 	return ErrorCode_OK;
 }
 
-void OptitrackSystem::DisconnectFromMotive()
+void OptitrackSystem::DisconnectAndResetClient()
 {
-	UE_LOG(LogNatNetPlugin, Warning, TEXT("Trying to disconnect from Motive."));
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("Trying to disconnect from Motive and reset client."));
 	if (g_pClient)
 	{
 		g_pClient->Disconnect();
 		g_pClient = NULL;
 		delete g_pClient;
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Disconnected from Motive."));
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Disconnected from Motive and resetted client."));
 	}
 	else
 	{
 		UE_LOG(LogNatNetPlugin, Warning, TEXT("Disconnect not necessary. Client not connected."));
 	}
-
-	
-
 }
 
-void OptitrackSystem::ResetClient()
+void OptitrackSystem::DisconnectClient()
 {
 	int iSuccess;
 
-	UE_LOG(LogNatNetPlugin, Warning, TEXT("Resetting client..."));
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("Disconnecting from client..."));
 
 	iSuccess = g_pClient->Disconnect();
 	if (iSuccess != 0)
 	{
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client reset failed."));
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client disconnect failed."));
 	}
 	else
 	{
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client reset successful.."));
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client disconnectted successful.."));
 	}
 }
 

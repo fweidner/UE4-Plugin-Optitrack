@@ -11,7 +11,7 @@ void UOptitrackBPFunctionLibrary::NatNetTest()
 	FOptitrackPluginModule::GetOptiTrackSystem()->PrintVersion();
 }
 
-void UOptitrackBPFunctionLibrary::ConnectAndInit()
+void UOptitrackBPFunctionLibrary::AutoConnectAndInit()
 {
 	FOptitrackPluginModule::GetOptiTrackSystem()->ConnectAndInit();
 }
@@ -21,14 +21,14 @@ void UOptitrackBPFunctionLibrary::AutoConnect()
 	FOptitrackPluginModule::GetOptiTrackSystem()->ConnectToMotive();
 }
 
-void UOptitrackBPFunctionLibrary::Disconnect()
+void UOptitrackBPFunctionLibrary::DisconnectAndResetClient()
 {
-	FOptitrackPluginModule::GetOptiTrackSystem()->DisconnectFromMotive();
+	FOptitrackPluginModule::GetOptiTrackSystem()->DisconnectAndResetClient();
 }
 
-void UOptitrackBPFunctionLibrary::ResetClient()
+void UOptitrackBPFunctionLibrary::DisconnectClient()
 {
-	FOptitrackPluginModule::GetOptiTrackSystem()->ResetClient();
+	FOptitrackPluginModule::GetOptiTrackSystem()->DisconnectClient();
 }
 
 void UOptitrackBPFunctionLibrary::InitClient()

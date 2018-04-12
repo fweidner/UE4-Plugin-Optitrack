@@ -28,16 +28,16 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 		static void NatNetTest();
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Connect Init"))
-		static void ConnectAndInit();
+		static void AutoConnectAndInit();
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Connect"))
 		static void AutoConnect();
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Disconnect"))
-		static void Disconnect();
+		static void DisconnectAndResetClient();
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Reset"))
-		static void ResetClient();
+		static void DisconnectClient();
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Init"))
 		static void InitClient();
