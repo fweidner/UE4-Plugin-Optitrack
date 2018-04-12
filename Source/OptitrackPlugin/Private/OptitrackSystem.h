@@ -28,6 +28,7 @@ public:
 	void InitClient();
 	float GetFrameRate();
 	float GetUnitsToMillimeter();
+	void InitRigidBodyIdToName();
 	void GetDataDescription();
 	
 	FTransform GetRigidBodyTransform(int _ID);
@@ -48,5 +49,7 @@ private:
 
 	int UnitsToMM = 0;
 	int UnitsToCm = 0;
+
+	TMap<FString, int> RigidBodyIdToName;
 
 };

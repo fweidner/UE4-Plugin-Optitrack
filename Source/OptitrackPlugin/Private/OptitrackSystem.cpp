@@ -35,6 +35,7 @@ void OptitrackSystem::ConnectAndInit()
 	ConnectToMotive();
 	InitClient();
 	GetUnitsToMillimeter();
+	InitRigidBodyIdToName();
 }
 
 int OptitrackSystem::ConnectToMotive()
@@ -216,6 +217,33 @@ float OptitrackSystem::GetUnitsToMillimeter()
 	UnitsToCm = UnitsToMM / 10;
 
 	return unitstomm;
+}
+
+void OptitrackSystem::InitRigidBodyIdToName()
+{
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("Requesting Data Descriptions..."));
+	sDataDescriptions* pDataDefs = NULL;
+	int iResult = g_pClient->GetDataDescriptionList(&pDataDefs);
+	if (iResult != ErrorCode_OK || pDataDefs == NULL)
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Unable to retrieve Data Descriptions."));
+	}
+	else
+	{
+		for (int i = 0; i < pDataDefs->nDataDescriptions; i++)
+		{
+			if (pDataDefs->arrDataDescriptions[i].type == Descriptor_RigidBody)
+			{
+				// RigidBody
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("\tData Description # %d (type=%d)"), i, pDataDefs->arrDataDescriptions[i].type);
+				sRigidBodyDescription* pRB = pDataDefs->arrDataDescriptions[i].Data.RigidBodyDescription;
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("\tRigidBody Name : %s"), *FString(pRB->szName));
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("\tRigidBody ID : %d"), pRB->ID);
+
+				RigidBodyIdToName.Add(pRB->szName, pRB->ID);
+			}
+		}
+	}
 }
 
 void OptitrackSystem::GetDataDescription()
