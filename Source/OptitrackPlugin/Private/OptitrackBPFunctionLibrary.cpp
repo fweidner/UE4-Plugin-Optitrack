@@ -68,7 +68,7 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActo
 	return tmpTransform;
 }
 
-FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, int _ID, ECoordSystemsoptitrack _coordSystem)
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, ECoordSystemsoptitrack _coordSystem, int _ID /*= 1*/)
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
 

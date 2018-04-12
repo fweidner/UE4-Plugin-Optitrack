@@ -55,13 +55,14 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 	//////////////////////////////////////////////////////////////////////////
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack GetDataDescription"))
-		static FTransform GetRigidBodyTransform(int _ID);
+		static FTransform GetRigidBodyTransform(int _ID = 1);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Actor Scale"))
-		static FTransform UpdateWithoutScaleActor(AActor* _tmpActor, int _ID);
+		static FTransform UpdateWithoutScaleActor(AActor* _tmpActor, int _ID = 1);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Actor Scale"))
-		static FTransform UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, int _ID, ECoordSystemsoptitrack _coordSystem);
+		static FTransform UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, ECoordSystemsoptitrack _coordSystem, int _ID = 1);
+
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Character Scale"))
 		static void UpdateWithoutScalePlayer(APawn* _tmp, int _ID=1);
 };
