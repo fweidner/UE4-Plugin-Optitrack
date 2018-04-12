@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "OptitrackBPFunctionLibrary.generated.h"
 
+
 /**
  * 
  */
@@ -20,6 +21,8 @@ UCLASS()
 class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
+//////////////////////////////////////////////////////////////////////////
 	
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Test"))
 		static void NatNetTest();

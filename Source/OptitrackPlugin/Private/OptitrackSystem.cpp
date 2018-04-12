@@ -98,36 +98,36 @@ int OptitrackSystem::ConnectToMotive()
 			UE_LOG(LogNatNetPlugin, Warning, TEXT("Unable to connect to server. Host not present. Exiting."));
 			return ErrorCode_Network;
 		}
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Server application info:"));
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Application: %s (ver. %d.%d.%d.%d)"), *FString(g_serverDescription.szHostApp), g_serverDescription.HostAppVersion[0],
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("\tServer application info:"));
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("\tApplication: %s (ver. %d.%d.%d.%d)"), *FString(g_serverDescription.szHostApp), g_serverDescription.HostAppVersion[0],
 			g_serverDescription.HostAppVersion[1], g_serverDescription.HostAppVersion[2], g_serverDescription.HostAppVersion[3]);
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNet Version: %d.%d.%d.%d"), g_serverDescription.NatNetVersion[0], g_serverDescription.NatNetVersion[1],
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("\tNatNet Version: %d.%d.%d.%d"), g_serverDescription.NatNetVersion[0], g_serverDescription.NatNetVersion[1],
 			g_serverDescription.NatNetVersion[2], g_serverDescription.NatNetVersion[3]);
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client IP:%s"), *FString(g_connectParams.localAddress));
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Server IP:%s"), *FString(g_connectParams.serverAddress));
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Server Name:%s"), *FString(g_serverDescription.szHostComputerName));
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("\tClient IP:%s"), *FString(g_connectParams.localAddress));
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("\tServer IP:%s"), *FString(g_connectParams.serverAddress));
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("\tServer Name:%s"), *FString(g_serverDescription.szHostComputerName));
 
 		// get mocap frame rate
-		ret = g_pClient->SendMessageAndWait("FrameRate", &pResult, &nBytes);
+		ret = g_pClient->SendMessageAndWait("\tFrameRate", &pResult, &nBytes);
 		if (ret == ErrorCode_OK)
 		{
 			float fRate = *((float*)pResult);
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("Mocap Framerate : %3.2f"), fRate);
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("\tMocap Framerate : %3.2f"), fRate);
 		}
 		else
 		{
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("Error getting frame rate."));
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("\tError getting frame rate."));
 		}
 
-		ret = g_pClient->SendMessageAndWait("AnalogSamplesPerMocapFrame", &pResult, &nBytes);
+		ret = g_pClient->SendMessageAndWait("\tAnalogSamplesPerMocapFrame", &pResult, &nBytes);
 		if (ret == ErrorCode_OK)
 		{
 			g_analogSamplesPerMocapFrame = *((int*)pResult);
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("Analog Samples Per Mocap Frame : %d"), g_analogSamplesPerMocapFrame);
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("\tAnalog Samples Per Mocap Frame : %d"), g_analogSamplesPerMocapFrame);
 		}
 		else
 		{
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("Error getting Analog frame rate."));
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("\tError getting Analog frame rate."));
 		}
 	}
 
