@@ -7,6 +7,8 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData);
 int g_analogSamplesPerMocapFrame = 0;
 
 TMap<int32_t, sRigidBodyData> RigidBodyData;
+bool PrintDebugMessages = false;
+
 
 OptitrackSystem::OptitrackSystem()
 {
@@ -332,6 +334,12 @@ FTransform OptitrackSystem::GetRigidBodyTransform(int _ID)
 	}
 }
 
+bool OptitrackSystem::SetPrintDebugMessages(bool _newVal)
+{
+	PrintDebugMessages = _newVal;
+	return PrintDebugMessages;
+}
+
 void NATNET_CALLCONV MessageHandler(Verbosity msgType, const char* msg)
 {
 	if (msgType < Verbosity_Info)
@@ -431,19 +439,22 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData)
 	{
 		// params
 		// 0x01 : bool, rigid body was successfully tracked in this frame
-		bool bTrackingValid = data->RigidBodies[i].params & 0x01;
+		if (PrintDebugMessages)
+		{
+			bool bTrackingValid = data->RigidBodies[i].params & 0x01;
 
-		//UE_LOG(LogNatNetPlugin, Warning, TEXT("\tx\ty\tz\tqx\tqy\tqz\tqw"));
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("Rigid Body [ID=%d  Error=%3.2f  Valid=%d]: \t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f"), data->RigidBodies[i].ID, data->RigidBodies[i].MeanError, bTrackingValid,
-			data->RigidBodies[i].x,
-			data->RigidBodies[i].y,
-			data->RigidBodies[i].z,
-			data->RigidBodies[i].qx,
-			data->RigidBodies[i].qy,
-			data->RigidBodies[i].qz,
-			data->RigidBodies[i].qw);
-	
-		RigidBodyData.Add(data->RigidBodies[i].ID, data->RigidBodies[i]);
+			//UE_LOG(LogNatNetPlugin, Warning, TEXT("\tx\ty\tz\tqx\tqy\tqz\tqw"));
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("Rigid Body [ID=%d  Error=%3.2f  Valid=%d]: \t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f"), data->RigidBodies[i].ID, data->RigidBodies[i].MeanError, bTrackingValid,
+				data->RigidBodies[i].x,
+				data->RigidBodies[i].y,
+				data->RigidBodies[i].z,
+				data->RigidBodies[i].qx,
+				data->RigidBodies[i].qy,
+				data->RigidBodies[i].qz,
+				data->RigidBodies[i].qw);
+
+			RigidBodyData.Add(data->RigidBodies[i].ID, data->RigidBodies[i]);
+		}
 	}
 
 ///

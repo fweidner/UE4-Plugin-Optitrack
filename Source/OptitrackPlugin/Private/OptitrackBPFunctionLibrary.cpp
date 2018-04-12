@@ -51,6 +51,10 @@ void UOptitrackBPFunctionLibrary::GetDataDescription()
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetDataDescription();
 }
 
+bool UOptitrackBPFunctionLibrary::SetPrintDebugMessages(bool _newVal)
+{
+	return FOptitrackPluginModule::GetOptiTrackSystem()->SetPrintDebugMessages(_newVal);
+}
 FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID)
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
