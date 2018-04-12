@@ -34,6 +34,7 @@ void OptitrackSystem::ConnectAndInit()
 {
 	ConnectToMotive();
 	InitClient();
+	GetUnitsToMillimeter();
 }
 
 int OptitrackSystem::ConnectToMotive()
@@ -204,6 +205,7 @@ float OptitrackSystem::GetUnitsToMillimeter()
 		UE_LOG(LogNatNetPlugin, Warning, TEXT("Error getting UnitsToMillimeters."));
 
 	UnitsToMM = unitstomm;
+	UnitsToCm = UnitsToMM / 10;
 
 	return unitstomm;
 }
@@ -319,12 +321,13 @@ FTransform OptitrackSystem::GetRigidBodyTransform(int _ID)
 	{
 		return FTransform(
 			FRotator(FQuat(tmpRigidBodyData->qx, tmpRigidBodyData->qy, tmpRigidBodyData->qz, tmpRigidBodyData->qw)),
-			FVector(tmpRigidBodyData->x*UnitsToMM, tmpRigidBodyData->y*UnitsToMM, tmpRigidBodyData->z*UnitsToMM),
+			FVector(tmpRigidBodyData->x*UnitsToCm, tmpRigidBodyData->y*UnitsToCm, tmpRigidBodyData->z*UnitsToCm),
 			FVector(1, 1, 1)
 		);
 	}
 	else
 	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("No RigidBody with ID %d found."), _ID);
 		return FTransform();
 	}
 }

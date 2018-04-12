@@ -46,5 +46,6 @@ private:
 	int g_analogSamplesPerMocapFrame = 0;
 
 	int UnitsToMM = 0;
+	int UnitsToCm = 0;
 
 };
