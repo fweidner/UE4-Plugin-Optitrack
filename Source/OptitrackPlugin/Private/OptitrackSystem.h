@@ -30,10 +30,10 @@ public:
 	float GetUnitsToMillimeter();
 	void GetDataDescription();
 	
+	FTransform GetRigidBodyTransform(int _ID);
 
 	bool SetPrintDebugMessages(bool _newVal);
 
-	FTransform GetRigidBodyTransform(int _ID);
 private:
 
 	NatNetClient * g_pClient = NULL;

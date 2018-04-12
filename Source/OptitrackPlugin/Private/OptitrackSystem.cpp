@@ -437,7 +437,8 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData)
 		UE_LOG(LogNatNetPlugin, Warning, TEXT("Models Changed.\n"));
 
 	// Rigid Bodies
-	UE_LOG(LogNatNetPlugin, Warning, TEXT("Rigid Bodies [Count=%d]"), data->nRigidBodies);
+	if (PrintDebugMessages)
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Rigid Bodies [Count=%d]"), data->nRigidBodies);
 	
 	int i = 0;
 	
@@ -445,9 +446,10 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData)
 	{
 		// params
 		// 0x01 : bool, rigid body was successfully tracked in this frame
+		bool bTrackingValid = data->RigidBodies[i].params & 0x01;
+
 		if (PrintDebugMessages)
 		{
-			bool bTrackingValid = data->RigidBodies[i].params & 0x01;
 
 			//UE_LOG(LogNatNetPlugin, Warning, TEXT("\tx\ty\tz\tqx\tqy\tqz\tqw"));
 			UE_LOG(LogNatNetPlugin, Warning, TEXT("Rigid Body [ID=%d  Error=%3.2f  Valid=%d]: \t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f\t%3.2f"), data->RigidBodies[i].ID, data->RigidBodies[i].MeanError, bTrackingValid,
@@ -458,8 +460,15 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData)
 				data->RigidBodies[i].qy,
 				data->RigidBodies[i].qz,
 				data->RigidBodies[i].qw);
+		}
 
+		if (bTrackingValid)
+		{
 			RigidBodyData.Add(data->RigidBodies[i].ID, data->RigidBodies[i]);
+		}
+		else
+		{
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("Invald tracking data for Rigid Body with ID: %d."), data->RigidBodies[i].ID)
 		}
 	}
 
