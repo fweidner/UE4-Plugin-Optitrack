@@ -29,8 +29,9 @@ public:
 	float GetFrameRate();
 	float GetUnitsToMillimeter();
 	void GetDataDescription();
+	
 
-
+	bool SetPrintDebugMessages(bool _newVal);
 
 	FTransform GetRigidBodyTransform(int _ID);
 private:
