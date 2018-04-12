@@ -18,21 +18,25 @@ OptitrackSystem::~OptitrackSystem()
 {
 }
 
-void OptitrackSystem::PrintVersion()
-{
-	unsigned char ver[4];
-	NatNet_GetVersion(ver);
-	UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetVersion is %d.%d.%d.%d"), ver[0], ver[1], ver[2], ver[3]);
-
-}
-
 /************************************************************************/
 /* MOTIVE / NATNET CORE		                                            */
 /************************************************************************/
 
+void OptitrackSystem::PrintVersion()
+{
+	unsigned char ver[4];
+	NatNet_GetVersion(ver);
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetVersion is %d.%d.%d.%d"), ver[0], ver[1], ver[2], ver[3])
+}
+
 void OptitrackSystem::ConnectAndInit()
 {
-	ConnectToMotive();
+	if (ConnectToMotive() != ErrorCode_OK)
+	{
+		DisconnectAndResetClient();
+		return;
+	}
+
 	InitClient();
 	GetUnitsToMillimeter();
 	InitRigidBodyIdToName();
@@ -170,12 +174,17 @@ void OptitrackSystem::DisconnectClient()
 
 void OptitrackSystem::InitClient()
 {
+	if (!bIsClientAvailable())
+		return;
+	
 	NatNet_SetLogCallback(MessageHandler);
 	g_pClient->SetFrameReceivedCallback(DataHandler, g_pClient);
 }
 
 float OptitrackSystem::GetFrameRate()
 {
+	if (!bIsClientAvailable())
+		return 0;
 
 	void* pResult;
 	int nBytes = 0;
@@ -196,6 +205,9 @@ float OptitrackSystem::GetFrameRate()
 
 float OptitrackSystem::GetUnitsToMillimeter()
 {
+	if (!bIsClientAvailable())
+		return 0;
+
 	void* pResult;
 	int nBytes = 0;
 	float unitstomm = 0.f;
@@ -218,6 +230,9 @@ float OptitrackSystem::GetUnitsToMillimeter()
 
 void OptitrackSystem::InitRigidBodyIdToName()
 {
+	if (!bIsClientAvailable())
+		return;
+
 	UE_LOG(LogNatNetPlugin, Warning, TEXT("Requesting Data Descriptions..."));
 	sDataDescriptions* pDataDefs = NULL;
 	int iResult = g_pClient->GetDataDescriptionList(&pDataDefs);
@@ -245,6 +260,9 @@ void OptitrackSystem::InitRigidBodyIdToName()
 
 void OptitrackSystem::GetDataDescription()
 {
+	if (!bIsClientAvailable())
+		return;
+
 	UE_LOG(LogNatNetPlugin, Warning, TEXT("Requesting Data Descriptions..."));
 	sDataDescriptions* pDataDefs = NULL;
 	int iResult = g_pClient->GetDataDescriptionList(&pDataDefs);
@@ -382,6 +400,17 @@ bool OptitrackSystem::SetPrintDebugMessages(bool _newVal)
 {
 	PrintDebugMessages = _newVal;
 	return PrintDebugMessages;
+}
+
+bool OptitrackSystem::bIsClientAvailable()
+{
+	if (g_pClient)
+		return true;
+	else
+	{
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("Client has not been created yet."));
+		return false;
+	}
 }
 
 void NATNET_CALLCONV MessageHandler(Verbosity msgType, const char* msg)

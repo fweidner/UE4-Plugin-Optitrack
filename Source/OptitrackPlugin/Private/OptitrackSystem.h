@@ -38,6 +38,8 @@ public:
 
 private:
 
+	bool bIsClientAvailable();
+
 	NatNetClient * g_pClient = NULL;
 
 	sServerDescription g_serverDescription;
