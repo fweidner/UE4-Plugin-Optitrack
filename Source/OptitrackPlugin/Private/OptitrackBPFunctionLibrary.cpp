@@ -84,7 +84,7 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	default:
 	{
 		return _tmpSceneComponent->GetComponentTransform(); //or return an empty transform?
-	}	
+	}
 	}
 }
 
@@ -98,6 +98,24 @@ void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID)
 		_tmp->GetController()->SetControlRotation(tmpTransform.GetRotation().Rotator());
 	}
 }
+
+void UOptitrackBPFunctionLibrary::SetControlRotationToZeroPlayer(APawn* _tmp, bool _yaw, bool _pitch, bool _roll)
+{
+
+	//X= Roll, Y= Pitch, Z= Yaw
+	FRotator tmpRotator = FRotator();
+	FRotator tmpControlRotator = _tmp->GetController()->GetControlRotation();
+
+	if (_roll)
+		tmpRotator.Roll = tmpControlRotator.Roll;
+	if (_pitch)
+		tmpRotator.Pitch = tmpControlRotator.Pitch;
+	if (_yaw)
+		tmpRotator.Yaw = tmpControlRotator.Yaw;
+
+	_tmp->GetController()->SetControlRotation(tmpRotator);
+}
+
 FTransform UOptitrackBPFunctionLibrary::GetRigidBodyTransform(int _ID)
 {
 	return FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(_ID);
