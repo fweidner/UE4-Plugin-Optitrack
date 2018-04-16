@@ -60,9 +60,8 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActo
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 
-	_tmpActor->SetActorLocation(tmpTransform.GetLocation());
-	_tmpActor->SetActorRotation(tmpTransform.GetRotation());
-
+	_tmpActor->SetActorLocation(tmpTransform.GetLocation());	
+	_tmpActor->SetActorRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
 	tmpTransform.SetScale3D(_tmpActor->GetActorScale3D());
 
 	return tmpTransform;
@@ -77,7 +76,8 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	case ECoordSystemsoptitrack::World:
 	{
 		_tmpSceneComponent->SetWorldLocation(tmpTransform.GetLocation());
-		_tmpSceneComponent->SetWorldRotation(tmpTransform.GetRotation());
+		_tmpSceneComponent->SetWorldRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
+
 		tmpTransform.SetScale3D(_tmpSceneComponent->GetComponentScale());
 		return tmpTransform;
 	}
@@ -95,7 +95,7 @@ void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID/
 	if (_tmp)
 	{
 		_tmp->SetActorLocation(tmpTransform.GetLocation());
-		_tmp->GetController()->SetControlRotation(tmpTransform.GetRotation().Rotator());
+		_tmp->GetController()->SetControlRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
 	}
 }
 
@@ -129,4 +129,11 @@ int UOptitrackBPFunctionLibrary::GetCorrectID(FString _Name, int _ID, ERigidBody
 		tmpID = FOptitrackPluginModule::GetOptiTrackSystem()->GetIdToName(_Name);
 	}
 	return tmpID;
+}
+
+FRotator UOptitrackBPFunctionLibrary::ConvertRotatorFromLHStoRHS(FTransform _tmpTransform)
+{
+	FQuat tmpQuat = _tmpTransform.GetRotation();
+	_tmpTransform.SetRotation(FQuat(-tmpQuat.X, tmpQuat.Y, -tmpQuat.Z, tmpQuat.W));
+	return _tmpTransform.Rotator();
 }
