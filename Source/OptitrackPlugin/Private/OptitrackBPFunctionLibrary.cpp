@@ -88,7 +88,7 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	}
 }
 
-void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
+void UOptitrackBPFunctionLibrary::UpdateWithoutScalePawn(APawn* _tmp, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 	
