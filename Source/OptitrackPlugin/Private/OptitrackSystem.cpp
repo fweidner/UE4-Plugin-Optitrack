@@ -372,7 +372,7 @@ int OptitrackSystem::GetIdToName(FString _name)
 		return *pRes;
 	else
 	{
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("no ID to name \"%s\" found. Returning 0. "), *_name);
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("No ID to name \"%s\" found. Returning 0. "), *_name);
 		return 0;
 	}
 }
@@ -533,10 +533,11 @@ void NATNET_CALLCONV DataHandler(sFrameOfMocapData* data, void* pUserData)
 		{
 			RigidBodyData.Add(data->RigidBodies[i].ID, data->RigidBodies[i]);
 		}
-		else
-		{
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("Invald tracking data for Rigid Body with ID: %d."), data->RigidBodies[i].ID)
-		}
+// 		else
+// 		{
+// 			if (PrintDebugMessages)
+// 				UE_LOG(LogNatNetPlugin, Warning, TEXT("Invalid tracking data for Rigid Body with ID: %d."), data->RigidBodies[i].ID)
+// 		}
 	}
 
 ///
