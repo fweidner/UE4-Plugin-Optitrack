@@ -88,15 +88,19 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	}
 }
 
-void UOptitrackBPFunctionLibrary::UpdateWithoutScalePawn(APawn* _tmp, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScalePawn(APawn* _tmp, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 	
 	if (_tmp)
 	{
 		_tmp->SetActorLocation(tmpTransform.GetLocation());
-		_tmp->GetController()->SetControlRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
+		FRotator tmpRotator = ConvertRotatorFromLHStoRHS2(tmpTransform);
+		//FRotator tmpRotator = tmpTransform.GetRotation().Rotator();
+		tmpTransform.SetRotation(tmpRotator.Quaternion());
+		_tmp->GetController()->SetControlRotation(tmpRotator);
 	}
+	return tmpTransform;
 }
 
 void UOptitrackBPFunctionLibrary::ResetRotationPlayer(APawn* _tmp, bool _yaw, bool _pitch, bool _roll)
@@ -135,5 +139,12 @@ FRotator UOptitrackBPFunctionLibrary::ConvertRotatorFromLHStoRHS(FTransform _tmp
 {
 	FQuat tmpQuat = _tmpTransform.GetRotation();
 	_tmpTransform.SetRotation(FQuat(-tmpQuat.X, tmpQuat.Y, -tmpQuat.Z, tmpQuat.W));
+	return _tmpTransform.Rotator();
+}
+
+FRotator UOptitrackBPFunctionLibrary::ConvertRotatorFromLHStoRHS2(FTransform _tmpTransform)
+{
+	FQuat tmpQuat = _tmpTransform.GetRotation();
+	_tmpTransform.SetRotation(FQuat(tmpQuat.Y, tmpQuat.X, -tmpQuat.Z, tmpQuat.W));
 	return _tmpTransform.Rotator();
 }

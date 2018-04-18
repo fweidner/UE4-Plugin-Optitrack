@@ -76,7 +76,7 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 		static FTransform UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, ECoordSystemsoptitrack _coordSystem, int _ID = 1, FString _Name = "", ERigidBodyIdentifierOptitrack _IdentifierMethod = ERigidBodyIdentifierOptitrack::RigidBodyID);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Character Scale"))
-		static void UpdateWithoutScalePawn(APawn* _tmp, int _ID=1, FString _Name = "", ERigidBodyIdentifierOptitrack _IdentifierMethod = ERigidBodyIdentifierOptitrack::RigidBodyID);
+		static FTransform UpdateWithoutScalePawn(APawn* _tmp, int _ID=1, FString _Name = "", ERigidBodyIdentifierOptitrack _IdentifierMethod = ERigidBodyIdentifierOptitrack::RigidBodyID);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Reset Control Rotation"))
 		static void ResetRotationPlayer(APawn* _tmp, bool _yaw = true, bool _pitch=true, bool _roll=true);
@@ -85,4 +85,5 @@ private:
 
 		static int GetCorrectID(FString _Name, int _ID, ERigidBodyIdentifierOptitrack _IdentifierMethod);
 		static FRotator ConvertRotatorFromLHStoRHS(FTransform _tmpTransform);
+		static FRotator ConvertRotatorFromLHStoRHS2(FTransform _tmpTransform);
 };
