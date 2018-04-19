@@ -89,18 +89,18 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	}
 }
 
-FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScalePawn(APawn* _tmp, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScalePawn(APawn* _Pawn, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 	
-	if (_tmp)
+	if (_Pawn)
 	{
-		_tmp->SetActorLocation(tmpTransform.GetLocation());
+		_Pawn->SetActorLocation(tmpTransform.GetLocation());
 
 		FRotator tmpRotator = ConvertRotatorOfTransformFromLHStoRHS(tmpTransform);
 		tmpRotator-=ViewDirectionForward;
 		tmpTransform.SetRotation(tmpRotator.Quaternion());
-		_tmp->GetController()->SetControlRotation(tmpRotator);
+		_Pawn->GetController()->SetControlRotation(tmpRotator);
 	}
 	return tmpTransform;
 }
@@ -144,10 +144,10 @@ FRotator UOptitrackBPFunctionLibrary::ConvertRotatorOfTransformFromLHStoRHS(FTra
 	return _tmpTransform.Rotator();
 }
 
-FRotator UOptitrackBPFunctionLibrary::SetCurrentViewDirectionToForward(FString _Name, int _ID, ERigidBodyIdentifierOptitrack _IdentifierMethod)
+FRotator UOptitrackBPFunctionLibrary::SetCurrentViewDirectionToForward(APawn* _Pawn)
 {
-	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
-	ViewDirectionForward = tmpTransform.GetRotation().Rotator();
+
+	ViewDirectionForward = _Pawn->GetControlRotation();
 	return ViewDirectionForward;
 }
 

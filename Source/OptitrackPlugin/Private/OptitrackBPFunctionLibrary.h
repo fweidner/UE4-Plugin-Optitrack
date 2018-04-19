@@ -82,7 +82,7 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 		static void ResetRotationPlayer(APawn* _tmp, bool _yaw = true, bool _pitch=true, bool _roll=true);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Set View Direction Forward"))
-		static FRotator SetCurrentViewDirectionToForward(FString _Name, int _ID, ERigidBodyIdentifierOptitrack _IdentifierMethod);
+		static FRotator SetCurrentViewDirectionToForward(APawn* _Pawn);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Get View Direction Forward"))
 		static FRotator GetCurrentViewDirectionToForward(APawn* _tmp);
