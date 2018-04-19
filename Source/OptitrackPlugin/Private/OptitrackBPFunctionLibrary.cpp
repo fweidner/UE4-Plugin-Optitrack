@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "OptitrackBPFunctionLibrary.h"
+#include "Transformer.h"
 
 #include "OptitrackPluginModule.h"
 
@@ -60,43 +61,38 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActo
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 
-	_tmpActor->SetActorLocation(tmpTransform.GetLocation());	
-	_tmpActor->SetActorRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
-	tmpTransform.SetScale3D(_tmpActor->GetActorScale3D());
+
+	if (_tmpActor)
+	{
+		tmpTransform = Optitrack::Transformer::UpdateTransformForActor(_tmpActor, tmpTransform);
+	}
+
+
 
 	return tmpTransform;
 }
 
-FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, ECoordSystemsoptitrack _coordSystem, int _ID /*= 1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, int _ID /*= 1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
+	if (_tmpSceneComponent)
+	{
+		tmpTransform = Optitrack::Transformer::UpdateTransformForSceneComponent(_tmpSceneComponent, tmpTransform);
+	}
 
-	switch (_coordSystem)
-	{
-	case ECoordSystemsoptitrack::World:
-	{
-		_tmpSceneComponent->SetWorldLocation(tmpTransform.GetLocation());
-		_tmpSceneComponent->SetWorldRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
+	return tmpTransform;
 
-		tmpTransform.SetScale3D(_tmpSceneComponent->GetComponentScale());
-		return tmpTransform;
-	}
-	default:
-	{
-		return _tmpSceneComponent->GetComponentTransform(); //or return an empty transform?
-	}
-	}
 }
 
-void UOptitrackBPFunctionLibrary::UpdateWithoutScalePlayer(APawn* _tmp, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
+FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScalePawn(APawn* _Pawn, int _ID/*=1*/, FString _Name /*= ""*/, ERigidBodyIdentifierOptitrack _IdentifierMethod /*= ERigidBodyIdentifierOptitrack::RigidBodyID*/)
 {
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
-	
-	if (_tmp)
+
+	if (_Pawn)
 	{
-		_tmp->SetActorLocation(tmpTransform.GetLocation());
-		_tmp->GetController()->SetControlRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
+		tmpTransform = Optitrack::Transformer::UpdateTransformForPawn(_Pawn, tmpTransform);
 	}
+	return tmpTransform;
 }
 
 void UOptitrackBPFunctionLibrary::ResetRotationPlayer(APawn* _tmp, bool _yaw, bool _pitch, bool _roll)
@@ -131,9 +127,12 @@ int UOptitrackBPFunctionLibrary::GetCorrectID(FString _Name, int _ID, ERigidBody
 	return tmpID;
 }
 
-FRotator UOptitrackBPFunctionLibrary::ConvertRotatorFromLHStoRHS(FTransform _tmpTransform)
+FRotator UOptitrackBPFunctionLibrary::SetCurrentViewDirectionToForward(APawn* _Pawn)
 {
-	FQuat tmpQuat = _tmpTransform.GetRotation();
-	_tmpTransform.SetRotation(FQuat(-tmpQuat.X, tmpQuat.Y, -tmpQuat.Z, tmpQuat.W));
-	return _tmpTransform.Rotator();
+	return Optitrack::Transformer::SetViewDirectionForward(_Pawn->GetControlRotation());;
+}
+
+FRotator UOptitrackBPFunctionLibrary::GetCurrentViewDirectionToForward(APawn* _tmp)
+{
+	return Optitrack::Transformer::GetViewDirectionForward();
 }

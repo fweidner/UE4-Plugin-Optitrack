@@ -9,50 +9,55 @@
 #include "CoreMinimal.h"
 
 /**
- * 
+ *
  */
-class OptitrackSystem
+
+namespace Optitrack
 {
-public:
-	OptitrackSystem();
-	~OptitrackSystem();
 
-	void PrintVersion();
+	class OptitrackSystem
+	{
+	public:
+		OptitrackSystem();
+		~OptitrackSystem();
 
-	void ConnectAndInit();
+		void PrintVersion();
 
-	int ConnectToMotive();
-	void DisconnectAndResetClient();
+		void ConnectAndInit();
 
-	void DisconnectClient();
-	void InitClient();
-	float GetFrameRate();
-	float GetUnitsToMillimeter();
-	void InitRigidBodyIdToName();
-	void GetDataDescription();
-	int GetIdToName(FString _name);
-	
-	FTransform GetRigidBodyTransform(int _ID);
+		int ConnectToMotive();
+		void DisconnectAndResetClient();
 
-	bool SetPrintDebugMessages(bool _newVal);
+		void DisconnectClient();
+		void InitClient();
+		float GetFrameRate();
+		float GetUnitsToMillimeter();
+		void InitRigidBodyIdToName();
+		void GetDataDescription();
+		int GetIdToName(FString _name);
 
-private:
+		FTransform GetRigidBodyTransform(int _ID);
 
-	bool bIsClientAvailable();
+		bool SetPrintDebugMessages(bool _newVal);
 
-	NatNetClient * g_pClient = NULL;
+	private:
 
-	sServerDescription g_serverDescription;
+		bool bIsClientAvailable();
 
-	sNatNetClientConnectParams g_connectParams;
+		NatNetClient * g_pClient = NULL;
 
-	char g_discoveredMulticastGroupAddr[kNatNetIpv4AddrStrLenMax] = NATNET_DEFAULT_MULTICAST_ADDRESS;
+		sServerDescription g_serverDescription;
 
-	int g_analogSamplesPerMocapFrame = 0;
+		sNatNetClientConnectParams g_connectParams;
 
-	int UnitsToMM = 0;
-	int UnitsToCm = 0;
+		char g_discoveredMulticastGroupAddr[kNatNetIpv4AddrStrLenMax] = NATNET_DEFAULT_MULTICAST_ADDRESS;
 
-	TMap<FString, int> RigidBodyIdToName;
+		int g_analogSamplesPerMocapFrame = 0;
 
-};
+		int UnitsToMM = 0;
+		int UnitsToCm = 0;
+
+		TMap<FString, int> RigidBodyIdToName;
+
+	};
+}

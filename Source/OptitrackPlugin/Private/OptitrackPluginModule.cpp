@@ -10,7 +10,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogNatNetPlugin, Log, All);
 
 #define LOCTEXT_NAMESPACE "FOptitrackPluginModule"
 
-OptitrackSystem* OptitrackSystem_ = NULL;
+Optitrack::OptitrackSystem* OptitrackSystem_ = NULL;
 
 void FOptitrackPluginModule::StartupModule()
 {
@@ -34,7 +34,7 @@ void FOptitrackPluginModule::StartupModule()
 		NatNet_GetVersion(ver);
 		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetVersion is %d.%d.%d.%d"), ver[0], ver[1], ver[2], ver[3]);
 
-		OptitrackSystem_ = new OptitrackSystem();
+		OptitrackSystem_ = new Optitrack::OptitrackSystem();
 	}
 	else
 	{
@@ -56,7 +56,7 @@ void FOptitrackPluginModule::ShutdownModule()
 }
 
 
-OptitrackSystem* FOptitrackPluginModule::GetOptiTrackSystem()
+Optitrack::OptitrackSystem* FOptitrackPluginModule::GetOptiTrackSystem()
 {
 	return OptitrackSystem_;
 }
