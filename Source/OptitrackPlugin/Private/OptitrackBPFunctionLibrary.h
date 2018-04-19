@@ -1,21 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "OptitrackBPFunctionLibrary.generated.h"
-
-
-/**
- * 
- */
-
-UENUM(BlueprintType)		//"BlueprintType" is essential to include
-enum class ECoordSystemsoptitrack : uint8
-{
-	World 	UMETA(DisplayName = "adjust in world space"),
-};
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class ERigidBodyIdentifierOptitrack: uint8
@@ -23,8 +11,6 @@ enum class ERigidBodyIdentifierOptitrack: uint8
 	RigidBodyName 	UMETA(DisplayName = "RigidBody Name"),
 	RigidBodyID		UMETA(DisplayName = "RigidBody ID"),
 };
-
-
 
 UCLASS()
 class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
@@ -73,7 +59,7 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 		static FTransform UpdateWithoutScaleActor(AActor* _tmpActor, int _ID = 1, FString _Name = "", ERigidBodyIdentifierOptitrack _IdentifierMethod = ERigidBodyIdentifierOptitrack::RigidBodyID);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Actor Scale"))
-		static FTransform UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, ECoordSystemsoptitrack _coordSystem, int _ID = 1, FString _Name = "", ERigidBodyIdentifierOptitrack _IdentifierMethod = ERigidBodyIdentifierOptitrack::RigidBodyID);
+		static FTransform UpdateWithoutScaleSceneComponent(USceneComponent* _tmpSceneComponent, int _ID = 1, FString _Name = "", ERigidBodyIdentifierOptitrack _IdentifierMethod = ERigidBodyIdentifierOptitrack::RigidBodyID);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Update Character Scale"))
 		static FTransform UpdateWithoutScalePawn(APawn* _tmp, int _ID=1, FString _Name = "", ERigidBodyIdentifierOptitrack _IdentifierMethod = ERigidBodyIdentifierOptitrack::RigidBodyID);
@@ -90,5 +76,5 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 private:
 
 		static int GetCorrectID(FString _Name, int _ID, ERigidBodyIdentifierOptitrack _IdentifierMethod);
-		static FRotator ConvertRotatorOfTransformFromLHStoRHS(FTransform _tmpTransform);
+	//	static FRotator ConvertRotatorOfTransformFromLHStoRHS(FTransform _tmpTransform);
 };

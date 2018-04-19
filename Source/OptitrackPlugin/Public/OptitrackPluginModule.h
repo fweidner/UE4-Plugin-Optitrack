@@ -24,7 +24,7 @@ public:
 
 	int ConnectToMotive();
 
-	static OptitrackSystem* GetOptiTrackSystem();;
+	static Optitrack::OptitrackSystem* GetOptiTrackSystem();;
 
 private:
 	/** Handle to the test dll we will load */
