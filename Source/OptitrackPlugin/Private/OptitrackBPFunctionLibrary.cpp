@@ -62,7 +62,7 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleActor(AActor* _tmpActo
 	FTransform tmpTransform = FOptitrackPluginModule::GetOptiTrackSystem()->GetRigidBodyTransform(GetCorrectID(_Name, _ID, _IdentifierMethod));
 
 	_tmpActor->SetActorLocation(tmpTransform.GetLocation());	
-	_tmpActor->SetActorRotation(ConvertRotatorFromLHStoRHS2(tmpTransform));
+	_tmpActor->SetActorRotation(ConvertRotatorOfTransformFromLHStoRHS(tmpTransform));
 	tmpTransform.SetScale3D(_tmpActor->GetActorScale3D());
 
 	return tmpTransform;
@@ -77,7 +77,7 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScaleSceneComponent(USceneC
 	case ECoordSystemsoptitrack::World:
 	{
 		_tmpSceneComponent->SetWorldLocation(tmpTransform.GetLocation());
-		_tmpSceneComponent->SetWorldRotation(ConvertRotatorFromLHStoRHS(tmpTransform));
+		_tmpSceneComponent->SetWorldRotation(ConvertRotatorOfTransformFromLHStoRHS(tmpTransform));
 
 		tmpTransform.SetScale3D(_tmpSceneComponent->GetComponentScale());
 		return tmpTransform;
@@ -97,7 +97,7 @@ FTransform UOptitrackBPFunctionLibrary::UpdateWithoutScalePawn(APawn* _tmp, int 
 	{
 		_tmp->SetActorLocation(tmpTransform.GetLocation());
 
-		FRotator tmpRotator = ConvertRotatorFromLHStoRHS2(tmpTransform);
+		FRotator tmpRotator = ConvertRotatorOfTransformFromLHStoRHS(tmpTransform);
 		tmpRotator-=ViewDirectionForward;
 		tmpTransform.SetRotation(tmpRotator.Quaternion());
 		_tmp->GetController()->SetControlRotation(tmpRotator);
@@ -137,14 +137,7 @@ int UOptitrackBPFunctionLibrary::GetCorrectID(FString _Name, int _ID, ERigidBody
 	return tmpID;
 }
 
-FRotator UOptitrackBPFunctionLibrary::ConvertRotatorFromLHStoRHS(FTransform _tmpTransform)
-{
-	FQuat tmpQuat = _tmpTransform.GetRotation();
-	_tmpTransform.SetRotation(FQuat(-tmpQuat.X, tmpQuat.Y, -tmpQuat.Z, tmpQuat.W));
-	return _tmpTransform.Rotator();
-}
-
-FRotator UOptitrackBPFunctionLibrary::ConvertRotatorFromLHStoRHS2(FTransform _tmpTransform)
+FRotator UOptitrackBPFunctionLibrary::ConvertRotatorOfTransformFromLHStoRHS(FTransform _tmpTransform)
 {
 	FQuat tmpQuat = _tmpTransform.GetRotation();
 	_tmpTransform.SetRotation(FQuat(tmpQuat.Y, tmpQuat.X, -tmpQuat.Z, tmpQuat.W));

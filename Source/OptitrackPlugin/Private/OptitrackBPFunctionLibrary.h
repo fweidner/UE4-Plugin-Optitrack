@@ -90,6 +90,5 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 private:
 
 		static int GetCorrectID(FString _Name, int _ID, ERigidBodyIdentifierOptitrack _IdentifierMethod);
-		static FRotator ConvertRotatorFromLHStoRHS(FTransform _tmpTransform);
-		static FRotator ConvertRotatorFromLHStoRHS2(FTransform _tmpTransform);
+		static FRotator ConvertRotatorOfTransformFromLHStoRHS(FTransform _tmpTransform);
 };
