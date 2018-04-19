@@ -21,7 +21,7 @@ namespace Optitrack
 		_Pawn->SetActorLocation(_tmpTransform.GetLocation());
 
 		FRotator tmpRotator = Optitrack::Helper::ConvertRotatorOfTransformFromLHStoRHS(_tmpTransform);
-		tmpRotator -= GetViewDirectionForward();
+		//tmpRotator -= GetViewDirectionForward();
 		_tmpTransform.SetRotation(tmpRotator.Quaternion());
 		_Pawn->GetController()->SetControlRotation(tmpRotator);
 

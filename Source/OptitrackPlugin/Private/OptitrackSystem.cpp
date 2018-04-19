@@ -386,11 +386,15 @@ namespace Optitrack
 
 		if (tmpRigidBodyData)
 		{
-			return FTransform(
-				FRotator(FQuat(tmpRigidBodyData->qx, tmpRigidBodyData->qy, tmpRigidBodyData->qz, tmpRigidBodyData->qw)),
-				FVector(tmpRigidBodyData->x*UnitsToCm, tmpRigidBodyData->y*UnitsToCm, tmpRigidBodyData->z*UnitsToCm),
-				FVector(1, 1, 1)
-			);
+
+			
+			FTransform tmp = FTransform(
+				FRotator(FQuat(tmpRigidBodyData->qz, -tmpRigidBodyData->qx, tmpRigidBodyData->qy, -tmpRigidBodyData->qw)),
+				FVector(tmpRigidBodyData->z*UnitsToCm, -tmpRigidBodyData->x*UnitsToCm, tmpRigidBodyData->y*UnitsToCm),
+				FVector(1, 1, 1));
+
+			return tmp;
+			
 		}
 		else
 		{
