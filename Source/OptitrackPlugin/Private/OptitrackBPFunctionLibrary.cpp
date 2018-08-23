@@ -2,6 +2,7 @@
 
 #include "OptitrackBPFunctionLibrary.h"
 #include "Transformer.h"
+#include "Runtime/Engine/Classes/GameFramework/Controller.h"
 
 #include "OptitrackPluginModule.h"
 
