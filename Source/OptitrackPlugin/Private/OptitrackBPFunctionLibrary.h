@@ -3,6 +3,8 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Runtime/Engine/Classes/GameFramework/Pawn.h"
+
 #include "OptitrackBPFunctionLibrary.generated.h"
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include

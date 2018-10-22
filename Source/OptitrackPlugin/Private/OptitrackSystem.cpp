@@ -372,10 +372,19 @@ namespace Optitrack
 		const int* pRes = RigidBodyIdToName.Find(_name);
 
 		if (pRes)
+		{
+			printGetIdToName = true;
+				
 			return *pRes;
+		}
 		else
 		{
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("No ID to name \"%s\" found. Returning 0. "), *_name);
+			if (printGetIdToName)
+			{
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("No ID to name \"%s\" found. Returning 0. "), *_name);
+				printGetIdToName = false;
+					 
+			}
 			return 0;
 		}
 	}
@@ -387,7 +396,8 @@ namespace Optitrack
 		if (tmpRigidBodyData)
 		{
 
-			
+			printGetRigidBodyTransform = true;
+				 
 			FTransform tmp = FTransform(
 				FRotator(FQuat(tmpRigidBodyData->qz, -tmpRigidBodyData->qx, tmpRigidBodyData->qy, -tmpRigidBodyData->qw)),
 				FVector(tmpRigidBodyData->z*UnitsToCm, -tmpRigidBodyData->x*UnitsToCm, tmpRigidBodyData->y*UnitsToCm),
@@ -398,7 +408,12 @@ namespace Optitrack
 		}
 		else
 		{
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("No RigidBody with ID %d found."), _ID);
+			if (printGetRigidBodyTransform)
+			{
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("No RigidBody with ID %d found."), _ID);
+				printGetRigidBodyTransform = false;
+			}
+
 			return FTransform();
 		}
 	}
