@@ -284,8 +284,8 @@ namespace Optitrack
 					// MarkerSet
 					sMarkerSetDescription* pMS = pDataDefs->arrDataDescriptions[i].Data.MarkerSetDescription;
 					UE_LOG(LogNatNetPlugin, Warning, TEXT("MarkerSet Name : %s"), *FString(pMS->szName));
-					for (int i = 0; i < pMS->nMarkers; i++)
-						UE_LOG(LogNatNetPlugin, Warning, TEXT("%s"), *FString(pMS->szMarkerNames[i]));
+					for (int j = 0; j < pMS->nMarkers; j++)
+						UE_LOG(LogNatNetPlugin, Warning, TEXT("%s"), *FString(pMS->szMarkerNames[j]));
 
 				}
 				else if (pDataDefs->arrDataDescriptions[i].type == Descriptor_RigidBody)
