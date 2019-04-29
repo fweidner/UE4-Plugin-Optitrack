@@ -30,7 +30,6 @@ public class OptitrackPlugin : ModuleRules
 			new string[]
 			{
 				"Core",
-				"OptitrackPluginLibrary",
                 "Projects",
 				// ... add other public dependencies that you statically link with here ...
 			}
