@@ -13,7 +13,6 @@ public class OptitrackPlugin : ModuleRules
 
         PublicIncludePaths.AddRange(
 			new string[] {
-				"OptitrackPlugin/Public"
 				// ... add public include paths required here ...
 			}
 			);
