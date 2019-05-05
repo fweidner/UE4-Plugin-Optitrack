@@ -12,11 +12,11 @@
 	"SupportURL": "",
 	"CanContainContent": true,
 	"IsBetaVersion": true,
-	"Installed": false,
+	"Installed": true,
 	"Modules": [
 		{
 			"Name": "OptitrackPlugin",
-			"Type": "Developer",
+			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}
 	]

@@ -22,23 +22,54 @@ void FOptitrackPluginModule::StartupModule()
 	// Add on the relative location of the third party dll and load it
 	FString LibraryPath;
 	LibraryPath = FPaths::Combine(*BaseDir, TEXT("/ThirdParty/NatNetSDK/lib/x64/NatNetLib.dll"));
+	// 	UE_LOG(LogNatNetPlugin, Warning, TEXT("BaseDir: %s"), *BaseDir);
+	// 	UE_LOG(LogNatNetPlugin, Warning, TEXT("LibDir: %s"), *LibraryPath);
 
 	NatNetHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;
-
 	if (NatNetHandle)
 	{
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetModule loaded successfully!"));
-
-		// Call the test function 
-		unsigned char ver[4];
-		NatNet_GetVersion(ver);
-		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetVersion is %d.%d.%d.%d"), ver[0], ver[1], ver[2], ver[3]);
-
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetModule loaded successfully (1st)!"));
 		OptitrackSystem_ = new Optitrack::OptitrackSystem();
 	}
-	else
+	else 
 	{
-		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("ThirdPartyLibraryError", "Failed to load example third party library"));
+		LibraryPath = FPaths::Combine("", TEXT("ThirdParty/NatNetSDK/lib/x64/NatNetLib.dll")); //start packaged app in root
+		//UE_LOG(LogNatNetPlugin, Warning, TEXT("LibDir: %s"), *LibraryPath);
+		NatNetHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;
+
+		if (NatNetHandle)
+		{
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetModule loaded successfully (2nd try)!"));
+			OptitrackSystem_ = new Optitrack::OptitrackSystem();
+		}
+		else
+		{
+			LibraryPath = FPaths::Combine("", TEXT("../../../ThirdParty/NatNetSDK/lib/x64/NatNetLib.dll")); //start packaged app in binaries
+			//UE_LOG(LogNatNetPlugin, Warning, TEXT("LibDir: %s"), *LibraryPath);
+			NatNetHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;
+
+			if (NatNetHandle)
+			{
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetModule loaded successfully (3rd try)!"));
+				OptitrackSystem_ = new Optitrack::OptitrackSystem();
+			}
+			else
+			{
+				LibraryPath = FPaths::Combine(FPaths::LaunchDir(), TEXT("../../../../../../Plugins/OptitrackPlugin/ThirdParty/NatNetSDK/lib/x64/NatNetLib.dll")); //start staged build from within UE4 via launch
+				//UE_LOG(LogNatNetPlugin, Warning, TEXT("LibDir: %s"), *LibraryPath);
+				NatNetHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;
+
+				if (NatNetHandle)
+				{
+					UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetModule loaded successfully (4. try)!"));
+					OptitrackSystem_ = new Optitrack::OptitrackSystem();
+				}
+				else
+				{
+					FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("ThirdPartyLibraryError", "Failed to load NatNetLibrary library"));
+				}
+			}
+		}
 	}
 }
 
@@ -59,6 +90,15 @@ void FOptitrackPluginModule::ShutdownModule()
 Optitrack::OptitrackSystem* FOptitrackPluginModule::GetOptiTrackSystem()
 {
 	return OptitrackSystem_;
+}
+
+void FOptitrackPluginModule::TestOptitrack()
+{
+	// Call the test function 
+	unsigned char ver[4];
+	NatNet_GetVersion(ver);
+	UE_LOG(LogNatNetPlugin, Warning, TEXT("NatNetVersion is %d.%d.%d.%d"), ver[0], ver[1], ver[2], ver[3]);
+
 }
 
 #undef LOCTEXT_NAMESPACE

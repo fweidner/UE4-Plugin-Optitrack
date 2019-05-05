@@ -2,6 +2,7 @@
 
 #include "OptitrackBPFunctionLibrary.h"
 #include "Transformer.h"
+#include "Runtime/Engine/Classes/GameFramework/Controller.h"
 
 #include "OptitrackPluginModule.h"
 
@@ -132,7 +133,7 @@ FRotator UOptitrackBPFunctionLibrary::SetCurrentViewDirectionToForward(APawn* _P
 	return Optitrack::Transformer::SetViewDirectionForward(_Pawn->GetControlRotation());;
 }
 
-FRotator UOptitrackBPFunctionLibrary::GetCurrentViewDirectionToForward(APawn* _tmp)
+FRotator UOptitrackBPFunctionLibrary::GetCurrentViewDirectionToForward()
 {
 	return Optitrack::Transformer::GetViewDirectionForward();
 }

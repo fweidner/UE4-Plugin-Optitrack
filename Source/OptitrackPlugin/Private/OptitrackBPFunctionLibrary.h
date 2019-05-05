@@ -3,6 +3,8 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Runtime/Engine/Classes/GameFramework/Pawn.h"
+
 #include "OptitrackBPFunctionLibrary.generated.h"
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
@@ -71,7 +73,7 @@ class UOptitrackBPFunctionLibrary : public UBlueprintFunctionLibrary
 		static FRotator SetCurrentViewDirectionToForward(APawn* _Pawn);
 
 	UFUNCTION(BlueprintCallable, Category = "Optitrack", meta = (Keywords = "NatNet Optitrack Get View Direction Forward"))
-		static FRotator GetCurrentViewDirectionToForward(APawn* _tmp);
+		static FRotator GetCurrentViewDirectionToForward();
 
 private:
 

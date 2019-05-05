@@ -8,12 +8,11 @@ public class OptitrackPlugin : ModuleRules
 	public OptitrackPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-        
-        
+
+
 
         PublicIncludePaths.AddRange(
 			new string[] {
-				"OptitrackPlugin/Public"
 				// ... add public include paths required here ...
 			}
 			);
@@ -31,7 +30,6 @@ public class OptitrackPlugin : ModuleRules
 			new string[]
 			{
 				"Core",
-				"OptitrackPluginLibrary",
                 "Projects",
 				// ... add other public dependencies that you statically link with here ...
 			}

@@ -4,10 +4,11 @@
 
 namespace Optitrack
 {
-	static FRotator ViewDirectionForward = FRotator();
+	static FRotator ViewDirectionForward = FRotator(0.f, 0.f, 0.f);
 
 	Transformer::Transformer()
 	{
+		ViewDirectionForward = FRotator(0.f, 0.f,0.f);
 	}
 
 	Transformer::~Transformer()
@@ -20,7 +21,7 @@ namespace Optitrack
 		_Pawn->SetActorLocation(_tmpTransform.GetLocation());
 
 		FRotator tmpRotator = Optitrack::Helper::ConvertRotatorOfTransformFromLHStoRHS(_tmpTransform);
-		tmpRotator -= GetViewDirectionForward();
+		//tmpRotator -= GetViewDirectionForward();
 		_tmpTransform.SetRotation(tmpRotator.Quaternion());
 		_Pawn->GetController()->SetControlRotation(tmpRotator);
 
@@ -40,8 +41,10 @@ namespace Optitrack
 
 	FTransform Transformer::UpdateTransformForActor(AActor* _tmpActor, FTransform tmpTransform)
 	{
-		_tmpActor->SetActorLocation(tmpTransform.GetLocation());	
+		_tmpActor->SetActorLocation(tmpTransform.GetLocation());
+
 		_tmpActor->SetActorRotation(Helper::ConvertRotatorOfTransformFromLHStoRHS(tmpTransform));
+		
 		tmpTransform.SetScale3D(_tmpActor->GetActorScale3D());
 
 		return tmpTransform;

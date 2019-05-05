@@ -284,8 +284,8 @@ namespace Optitrack
 					// MarkerSet
 					sMarkerSetDescription* pMS = pDataDefs->arrDataDescriptions[i].Data.MarkerSetDescription;
 					UE_LOG(LogNatNetPlugin, Warning, TEXT("MarkerSet Name : %s"), *FString(pMS->szName));
-					for (int i = 0; i < pMS->nMarkers; i++)
-						UE_LOG(LogNatNetPlugin, Warning, TEXT("%s"), *FString(pMS->szMarkerNames[i]));
+					for (int j = 0; j < pMS->nMarkers; j++)
+						UE_LOG(LogNatNetPlugin, Warning, TEXT("%s"), *FString(pMS->szMarkerNames[j]));
 
 				}
 				else if (pDataDefs->arrDataDescriptions[i].type == Descriptor_RigidBody)
@@ -372,10 +372,19 @@ namespace Optitrack
 		const int* pRes = RigidBodyIdToName.Find(_name);
 
 		if (pRes)
+		{
+			printGetIdToName = true;
+				
 			return *pRes;
+		}
 		else
 		{
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("No ID to name \"%s\" found. Returning 0. "), *_name);
+			if (printGetIdToName)
+			{
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("No ID to name \"%s\" found. Returning 0. "), *_name);
+				printGetIdToName = false;
+					 
+			}
 			return 0;
 		}
 	}
@@ -386,15 +395,25 @@ namespace Optitrack
 
 		if (tmpRigidBodyData)
 		{
-			return FTransform(
-				FRotator(FQuat(tmpRigidBodyData->qx, tmpRigidBodyData->qy, tmpRigidBodyData->qz, tmpRigidBodyData->qw)),
-				FVector(tmpRigidBodyData->x*UnitsToCm, tmpRigidBodyData->y*UnitsToCm, tmpRigidBodyData->z*UnitsToCm),
-				FVector(1, 1, 1)
-			);
+
+			printGetRigidBodyTransform = true;
+				 
+			FTransform tmp = FTransform(
+				FRotator(FQuat(tmpRigidBodyData->qz, -tmpRigidBodyData->qx, tmpRigidBodyData->qy, -tmpRigidBodyData->qw)),
+				FVector(tmpRigidBodyData->z*UnitsToCm, -tmpRigidBodyData->x*UnitsToCm, tmpRigidBodyData->y*UnitsToCm),
+				FVector(1, 1, 1));
+
+			return tmp;
+			
 		}
 		else
 		{
-			UE_LOG(LogNatNetPlugin, Warning, TEXT("No RigidBody with ID %d found."), _ID);
+			if (printGetRigidBodyTransform)
+			{
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("No RigidBody with ID %d found."), _ID);
+				printGetRigidBodyTransform = false;
+			}
+
 			return FTransform();
 		}
 	}

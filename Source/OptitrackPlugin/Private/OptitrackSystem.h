@@ -58,6 +58,8 @@ namespace Optitrack
 		int UnitsToCm = 0;
 
 		TMap<FString, int> RigidBodyIdToName;
+		bool printGetRigidBodyTransform = true;
+		bool printGetIdToName = true;
 
 	};
 }

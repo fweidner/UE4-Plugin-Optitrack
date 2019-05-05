@@ -13,7 +13,8 @@ namespace Optitrack
 	public:
 		Helper();
 		~Helper();
-
+		
+		/**DEPRECATED**/
 		static FRotator ConvertRotatorOfTransformFromLHStoRHS(FTransform _tmpTransform);
 	};
 
