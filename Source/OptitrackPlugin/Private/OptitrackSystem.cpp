@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #include "OptitrackSystem.h"
+
+#include "Runtime/Core/Public/GenericPlatform/GenericPlatformTime.h" // for FPlatformTime
 
 namespace Optitrack
 {
@@ -408,7 +409,7 @@ namespace Optitrack
 		}
 		else
 		{
-			if (printGetRigidBodyTransform)
+			if (true)
 			{
 				UE_LOG(LogNatNetPlugin, Warning, TEXT("No RigidBody with ID %d found."), _ID);
 				printGetRigidBodyTransform = false;
@@ -469,6 +470,9 @@ namespace Optitrack
 	{
 		NatNetClient* pClient = (NatNetClient*)pUserData;
 
+		sServerDescription g_serverDescription;
+		memset(&g_serverDescription, 0, sizeof(g_serverDescription));
+		bool ret = pClient->GetServerDescription(&g_serverDescription);
 		///
 		// Software latency here is defined as the span of time between:
 
@@ -478,48 +482,58 @@ namespace Optitrack
 		// 	//
 		// 	// This figure may appear slightly higher than the "software latency" reported in the Motive user interface,
 		// 	// because it additionally includes the time spent preparing to stream the data via NatNet.
-		// 	const uint64_t softwareLatencyHostTicks = data->TransmitTimestamp - data->CameraDataReceivedTimestamp;
-		// 	const double softwareLatencyMillisec = (softwareLatencyHostTicks * 1000) / static_cast<double>(g_serverDescription.HighResClockFrequency);
+		 	const uint64_t softwareLatencyHostTicks = data->TransmitTimestamp - data->CameraDataReceivedTimestamp;
+		 	const double softwareLatencyMillisec = (softwareLatencyHostTicks * 1000) / static_cast<double>(g_serverDescription.HighResClockFrequency);
 		// 
 		// 	// Transit latency is defined as the span of time between Motive transmitting the frame of data, and its reception by the client (now).
 		// 	// The SecondsSinceHostTimestamp method relies on NatNetClient's internal clock synchronization with the server using Cristian's algorithm.
-		// 	const double transitLatencyMillisec = pClient->SecondsSinceHostTimestamp(data->TransmitTimestamp) * 1000.0;
+		 	const double transitLatencyMillisec = pClient->SecondsSinceHostTimestamp(data->TransmitTimestamp) * 1000.0;
 		// 
 		// 
 		// 
-		// 	int i = 0;
+		 	int i = 0;
 		// 
-		// 	printf("FrameID : %d\n", data->iFrame);
-		// 	printf("Timestamp : %3.2lf\n", data->fTimestamp);
-		// 	printf("Software latency : %.2lf milliseconds\n", softwareLatencyMillisec);
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("FrameID : %d\n"), data->iFrame);
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("Timestamp : %3.2lf\n"), data->fTimestamp);
+			UE_LOG(LogNatNetPlugin, Warning, TEXT("Software latency : %.2lf milliseconds"), softwareLatencyMillisec);
+
+		 	printf("FrameID : %d\n", data->iFrame);
+		 	printf("Timestamp : %3.2lf\n", data->fTimestamp);
+		 	printf("Software latency : %.2lf milliseconds\n", softwareLatencyMillisec);
 		// 
 		// 	// Only recent versions of the Motive software in combination with ethernet camera systems support system latency measurement.
 		// 	// If it's unavailable (for example, with USB camera systems, or during playback), this field will be zero.
-		// 	const bool bSystemLatencyAvailable = data->CameraMidExposureTimestamp != 0;
-		// 
-		// 	if (bSystemLatencyAvailable)
-		// 	{
-		// 		// System latency here is defined as the span of time between:
-		// 		//   a) The midpoint of the camera exposure window, and therefore the average age of the photons (CameraMidExposureTimestamp)
-		// 		// and
-		// 		//   b) The time immediately prior to the NatNet frame being transmitted over the network (TransmitTimestamp)
-		// 		const uint64_t systemLatencyHostTicks = data->TransmitTimestamp - data->CameraMidExposureTimestamp;
-		// 		const double systemLatencyMillisec = (systemLatencyHostTicks * 1000) / static_cast<double>(g_serverDescription.HighResClockFrequency);
-		// 
-		// 		// Client latency is defined as the sum of system latency and the transit time taken to relay the data to the NatNet client.
-		// 		// This is the all-inclusive measurement (photons to client processing).
-		// 		const double clientLatencyMillisec = pClient->SecondsSinceHostTimestamp(data->CameraMidExposureTimestamp) * 1000.0;
-		// 
-		// 		// You could equivalently do the following (not accounting for time elapsed since we calculated transit latency above):
-		// 		//const double clientLatencyMillisec = systemLatencyMillisec + transitLatencyMillisec;
-		// 
-		// 		printf("System latency : %.2lf milliseconds\n", systemLatencyMillisec);
-		// 		printf("Total client latency : %.2lf milliseconds (transit time +%.2lf ms)\n", clientLatencyMillisec, transitLatencyMillisec);
-		// 	}
-		// 	else
-		// 	{
-		// 		printf("Transit latency : %.2lf milliseconds\n", transitLatencyMillisec);
-		// 	}
+		 	const bool bSystemLatencyAvailable = data->CameraMidExposureTimestamp != 0;
+		 
+		 	if (bSystemLatencyAvailable)
+		 	{
+		 		// System latency here is defined as the span of time between:
+		 		//   a) The midpoint of the camera exposure window, and therefore the average age of the photons (CameraMidExposureTimestamp)
+		 		// and
+		 		//   b) The time immediately prior to the NatNet frame being transmitted over the network (TransmitTimestamp)
+		 		const uint64_t systemLatencyHostTicks = data->TransmitTimestamp - data->CameraMidExposureTimestamp;
+		 		const double systemLatencyMillisec = (systemLatencyHostTicks * 1000) / static_cast<double>(g_serverDescription.HighResClockFrequency);
+		 
+		 		// Client latency is defined as the sum of system latency and the transit time taken to relay the data to the NatNet client.
+		 		// This is the all-inclusive measurement (photons to client processing).
+		 		const double clientLatencyMillisec = pClient->SecondsSinceHostTimestamp(data->CameraMidExposureTimestamp) * 1000.0;
+		 
+		 		// You could equivalently do the following (not accounting for time elapsed since we calculated transit latency above):
+		 		//const double clientLatencyMillisec = systemLatencyMillisec + transitLatencyMillisec;
+		 
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("System latency : %.2lf milliseconds\n"), systemLatencyMillisec);
+				UE_LOG(LogNatNetPlugin, Warning, TEXT("Total client latency : %.2lf milliseconds (transit time +%.2lf ms)\n"), clientLatencyMillisec, transitLatencyMillisec);
+				//printf("System latency : %.2lf milliseconds\n", systemLatencyMillisec);
+		 		//printf("Total client latency : %.2lf milliseconds (transit time +%.2lf ms)\n", clientLatencyMillisec, transitLatencyMillisec);
+		 	}
+		 	else
+		 	{
+		 		printf("Transit latency : %.2lf milliseconds\n", transitLatencyMillisec);
+		 	}
+
+		double startt = FPlatformTime::Seconds();
+		UE_LOG(LogNatNetPlugin, Warning, TEXT("time optitrack input: %f"), startt);
+
 
 		bool bTrackedModelsChanged = ((data->params & 0x02) != 0);
 		if (bTrackedModelsChanged)
@@ -529,7 +543,7 @@ namespace Optitrack
 		if (PrintDebugMessages)
 			UE_LOG(LogNatNetPlugin, Warning, TEXT("Rigid Bodies [Count=%d]"), data->nRigidBodies);
 
-		int i = 0;
+		i = 0;
 
 		for (i = 0; i < data->nRigidBodies; i++)
 		{

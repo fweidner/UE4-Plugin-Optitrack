@@ -61,5 +61,7 @@ namespace Optitrack
 		bool printGetRigidBodyTransform = true;
 		bool printGetIdToName = true;
 
+
+		
 	};
 }
