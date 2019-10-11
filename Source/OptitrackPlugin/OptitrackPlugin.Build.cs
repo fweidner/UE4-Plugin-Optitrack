@@ -66,6 +66,10 @@ public class OptitrackPlugin : ModuleRules
             isLibrarySupported = true;
             LibrariesPath = Path.Combine(ThirdPartyPath, "NatNetSDK", "lib", "x64");
         }
+        else if (Target.Platform == UnrealTargetPlatform.Win32)
+        {
+            LibrariesPath = Path.Combine(ThirdPartyPath, "NatNetSDK", "lib");
+        }
 
         if (isLibrarySupported)
         {

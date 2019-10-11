@@ -1,10 +1,12 @@
 // Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 
 #include "OptitrackPluginModule.h"
-#include "Core.h"
-#include "ModuleManager.h"
 
-#include "IPluginManager.h"
+#include "Misc/MessageDialog.h"
+#include "Misc/Paths.h" 
+
+#include "Modules/ModuleManager.h"
+#include "Interfaces/IPluginManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogNatNetPlugin, Log, All);
 
@@ -66,6 +68,7 @@ void FOptitrackPluginModule::StartupModule()
 				}
 				else
 				{
+					
 					FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("ThirdPartyLibraryError", "Failed to load NatNetLibrary library"));
 				}
 			}

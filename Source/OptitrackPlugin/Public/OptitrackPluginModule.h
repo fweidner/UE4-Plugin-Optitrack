@@ -1,16 +1,16 @@
 // Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 
 #pragma once
-#include <NatNetTypes.h>
-#include <NatNetCAPI.h>
-#include <NatNetClient.h>
-
-#include "OptitrackSystem.h"
 
 #include <vector>
 
-#include "ModuleManager.h"
+#include "Modules/ModuleManager.h"
 
+#include <NatNetCAPI.h>
+#include <NatNetTypes.h>
+#include <NatNetClient.h>
+
+#include "OptitrackSystem.h"
 
 
 
